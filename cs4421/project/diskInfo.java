@@ -13,5 +13,11 @@ public class diskInfo
     public native long getTotal (int disk);
     public native long getUsed (int disk);
     public native long getAvailable (int disk);
+    
 }
 
+class diskPercentage
+{
+    public native double getUsedPercentage (int disk);
+    public native double getAvailablePercentage (int disk);
+}
