@@ -87,11 +87,16 @@ public class template
         diskInfo disk = new diskInfo();
         disk.read();
 
+        diskPercentage dp = new diskPercentage();
+        double usedPercent = dp.getUsagePercentage(i, disk);
+        double freePercent = dp.getFreePercentage(i, disk);
+
         // Iterate through all of the disks
         for (int i = 0; i < disk.diskCount(); i++) {
             System.out.println ("disk "+disk.getName(i)+" has "+
                 disk.getTotal(i)+" blocks, of which "+
                 disk.getUsed(i)+" are used");
+            System.out.println ("Usage: "+String.format("%.2f", usedPercent)+"% used, "+ String.format("%.2f", freePercent)+"% free"); 
         }
     }
 
