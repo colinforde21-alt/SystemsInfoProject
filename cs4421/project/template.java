@@ -87,16 +87,19 @@ public class template
         diskInfo disk = new diskInfo();
         disk.read();
 
-        diskPercentage dp = new diskPercentage();
-        double usedPercent = dp.getUsagePercentage(i, disk);
-        double freePercent = dp.getFreePercentage(i, disk);
+        System.out.println("\nThis machine has "+
+            disk.diskCount()+" disks");
 
         // Iterate through all of the disks
         for (int i = 0; i < disk.diskCount(); i++) {
-            System.out.println ("disk "+disk.getName(i)+" has "+
+            double usedPercent = (double)disk.getUsed(i) / disk.getTotal(i) * 100;
+            double freePercent = 100.0 - usedPercent;
+
+            System.out.println("Disk "+disk.getName(i)+" has "+
                 disk.getTotal(i)+" blocks, of which "+
                 disk.getUsed(i)+" are used");
-            System.out.println ("Usage: "+String.format("%.2f", usedPercent)+"% used, "+ String.format("%.2f", freePercent)+"% free"); 
+            System.out.println("Usage: "+String.format("%.2f", usedPercent)+"% used, "+
+                String.format("%.2f", freePercent)+"% free");
         }
     }
 
@@ -105,17 +108,14 @@ public class template
         memInfo mem = new memInfo();
         mem.read();
 
-        System.out.println ("There is "+mem.getTotal()+" memory of which "+
-            mem.getUsed()+" is used");
+        System.out.println("\nThis machine has "+mem.getTotal()+" total memory");
+        System.out.println("Memory used: "+mem.getUsed()+" bytes");
     }
 
     public static void main(String[] args)
     {
         System.loadLibrary("sysinfo");
-        sysInfo info = new sysInfo();
-        cpuInfo cpu = new cpuInfo();
-        cpu.read(0);
-
+        
         showCPU();
         showPCI();
         showUSB();
