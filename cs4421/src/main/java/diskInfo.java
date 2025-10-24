@@ -66,11 +66,11 @@ public class diskInfo
     public String getDiskType (int disk){
         String name = getName(disk).toLowerCase();
         if (name.startsWith("sd") ){
-            return "SSD";
+            return "SATA";
         } else if (name.startsWith("vd")){
             return "Virtual Disk";
         } else if (name.startsWith("hd")){
-            return "HDD";
+            return "IDE";
         } else if (name.startsWith("nvme")){
             return "NVMe";
         } else if (name.startsWith("mmcblk")){
@@ -83,5 +83,6 @@ public class diskInfo
     }
 
 }
+
 
 
