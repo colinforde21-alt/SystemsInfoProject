@@ -14,8 +14,25 @@ public class diskInfo
     public native long getUsed (int disk);
     public native long getAvailable (int disk);
 
-    // Percentage calculation methods removed - now handled in template.java
+    public double getUsedPercent (int disk){
+        long total = getTotal(disk);
+        long used = getUsed(disk);
+        if (total == 0) {
+            return 0.0;
+        }
+        double percent = ((double)used / (double)total) * 100.0;
+        return percent;
+    }
 
+    public double getAvailablePercent (int disk){
+        long total = getTotal(disk);
+        long available = getAvailable(disk);
+        if (total == 0) {
+            return 0.0;
+        }
+        double percent = ((double)available / (double)total) * 100.0;
+        return percent;
+    }
     public double systemTotal(){
         double total = 0.0;
         int disks = diskCount();
@@ -44,6 +61,23 @@ public class diskInfo
         }
         double availableGB = available / (1024.0 * 1024.0 * 1024.0);
         return availableGB;
+    }
+
+    public String getDiskType (int disk){
+        String name = getName(disk).toLowerCase();
+        if (name.startsWith("sd")|| name.startsWith("vd")){
+            return "SSD";
+        } else if (name.startsWith("hd")){
+            return "HDD";
+        } else if (name.startsWith("nvme")){
+            return "NVMe";
+        } else if (name.startsWith("mmcblk")){
+            return "eMMC";
+        } else if (name.startsWith("loop")){
+            return "Loopback";
+        } else {
+            return "Unknown";
+        }
     }
 }
 
