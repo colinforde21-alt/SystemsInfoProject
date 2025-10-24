@@ -98,14 +98,12 @@ public class template
         }
     }
 
-    public static void showMem()
-    {
+    public static void showMem(){
         memInfo mem = new memInfo();
         mem.read();
-
-        System.out.println ("There is "+mem.getTotal()+" memory of which "+
-            mem.getUsed()+" is used");
+        System.out.println(mem.getEducationalSummary());
     }
+
 
     public static void main(String[] args)
     {
@@ -125,4 +123,5 @@ public class template
         System.out.println("CPU: " + cpu.getProcessorIdentifier().getName());
     }
 }
+
 
