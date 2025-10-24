@@ -1,0 +1,7 @@
+cpuInfo.class
+pciInfo.class
+memInfo.class
+diskInfo.class
+usbInfo.class
+template.class
+sysInfo.class
