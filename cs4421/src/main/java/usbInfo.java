@@ -20,5 +20,38 @@ public class usbInfo
 
     // Return the product ID of a USB device
     public native int productID (int bus, int device);
+
+    public String vendorType (int bus, int device){
+        int vid = vendorID (bus, device);
+        switch (vid){
+            case 0x046D: return "Logitech Inc.";
+            case 0x05AC: return "Apple, Inc.";
+            case 0x0781: return "SanDisk Corp.";
+            case 0x8087: return "Intel Corp.";  
+            case 0x045E: return "Microsoft Corp.";
+            case 0x18D1: return "Google, Inc.";
+            case 0x0BDA: return "Realtek Semiconductor Corp.";
+            case 0x054C: return "Sony Corp.";
+            case 0x12D1: return "Huawei Technologies Co., Ltd";
+            case 0x1A40: return "Terminus Technology Inc.";
+            case 0x0E8D: return "MediaTek Inc.";
+            case 0x1B3D: return "Razer Inc.";
+            case 0x1E7D: return "DJI Innovations";
+            case 0x2E8A: return "Bitmain Technologies Inc.";
+            case 0x1F3A: return "TP-Link Technologies Co., Ltd.";
+            case 0x2C7C: return "Samsung Electronics Co., Ltd.";
+            case 0x13FE: return "Sony Interactive Entertainment";
+            case 0x1532: return "Razer Inc.";
+            case 0x0C45: return "Microdia";
+            case 0x1D6B: return "Linux Foundation";
+            case 0x0403: return "Future Technology Devices International, Ltd";
+            case 0x10C4: return "Silicon Labs";
+            case 0x1366: return "Cypress Semiconductor Corp.";
+            default: return "Unknown Vendor";
+        }
+    }
+    
+
 }
 
+        
