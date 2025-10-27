@@ -1,9 +1,6 @@
-/*
- * CS4421 memInfo.java
- * - Designed for integration with template.java and with reference to W1L4/W3L8 lecture content
- * - Exposes both raw hardware info and computer architecture concepts (cells, address lines, memory type)
- * Uday Bhattacharya, University of Limerick
- */
+/* CS4421 memInfo.java
+Uday Bhattacharya, University of Limerick
+*/
 public class memInfo
 {
     // Native JNI library, required for hardware queries
@@ -17,11 +14,7 @@ public class memInfo
 
     // Load native values from hardware: Call before ALL queries!
     public native void read();
-
-    // Get total installed main memory (RAM), in KB (1024 bytes per KB)
     public native int getTotal();
-
-    // Get memory currently in use, in KB
     public native int getUsed();
 
     // Returns free (unused) main memory, in KB (total - used)
@@ -33,17 +26,15 @@ public class memInfo
     public double getPercentUsed() {
         int total = getTotal();
         if (total == 0) return 0.0;
-        return 100.0 * getUsed() / total;
+        return 100.0 * (getUsed() / total);
     }
 
     // Returns the required number of memory address lines for this RAM size
     // (Slides: # of address lines determines maximum addressable memory)
-    public int getAddressLines() {
-        int bytes = getTotal() * 1024; // convert KB to bytes
-        int lines = 0;
-        while ((1L << lines) < bytes) lines++;
-        return lines;
-    }
+public int getAddressLines() {
+    int bytes = getTotal() * 1024; // convert KB to bytes + each address line is a bit
+    return (int) Math.ceil(Math.log(bytes) / Math.log(2));
+}
 
     // Returns a formatted string reporting all main architectural properties
     public String getEducationalSummary() {
@@ -73,3 +64,4 @@ public class memInfo
         );
     }
 }
+
