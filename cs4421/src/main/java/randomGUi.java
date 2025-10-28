@@ -98,6 +98,15 @@ public class randomGUi {
                 frame.dispose();
             }
         });
+        JButton displayButton = new JButton("Display Info");
+        displayButton.setBounds(startX + (buttonWidth + spacing) / 2 + buttonWidth + spacing, startY + buttonHeight + spacing, buttonWidth, buttonHeight);
+        panel.add(displayButton);
+        displayButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e){
+                new showDisplayInfo();
+                frame.dispose();
+            }
+        });
         frame.add(panel);
         frame.setVisible(true);
 
@@ -305,5 +314,26 @@ class showBatteryInfo {
         batteryFrame.add(scrollPane);
 
         batteryFrame.setVisible(true);
+    }
+}
+
+class showDisplayInfo {
+    public showDisplayInfo() {
+        JFrame displayFrame = new JFrame("Display Information");
+        displayFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        displayFrame.setSize(400, 300);
+
+        int displayCount = displayInfo.getDisplayCount();
+        String displayDetails = displayInfo.getDisplayInfo();
+
+        JTextArea displayInfoText = new JTextArea();
+        displayInfoText.append("Number of displays: " + displayCount + "\n\n");
+        displayInfoText.append(displayDetails + "\n");
+        displayInfoText.setEditable(false);
+
+        JScrollPane scrollPane = new JScrollPane(displayInfoText);
+        displayFrame.add(scrollPane);
+
+        displayFrame.setVisible(true);
     }
 }

@@ -11,12 +11,14 @@ usbInfo.class
 randomGUi$7.class
 showCpuInfo.class
 randomGUi$2.class
+randomGUi$8.class
 memInfo.class
 randomGUi$3.class
 displayInfo.class
 randomGUi$1.class
 cpuInfo.class
 pciInfo.class
+showDisplayInfo.class
 showBatteryInfo.class
 diskInfo.class
 gpuInfo.class
