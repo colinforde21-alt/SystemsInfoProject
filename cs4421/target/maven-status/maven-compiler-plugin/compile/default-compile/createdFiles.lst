@@ -12,10 +12,12 @@ randomGUi$5.class
 randomGUi.class
 cpuInfo.class
 pciInfo.class
+showGPUInfo.class
 diskInfo.class
 usbInfo.class
 gpuInfo.class
 showUSBInfo.class
+randomGUi$6.class
 newPciInfo.class
 showCpuInfo.class
 sysInfo.class

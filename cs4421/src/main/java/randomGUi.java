@@ -79,6 +79,16 @@ public class randomGUi {
                 frame.dispose();
             }
         });
+        JButton gpuButton = new JButton("GPU Info");
+        gpuButton.setBounds(startX + (buttonWidth + spacing) / 2 + buttonWidth + spacing, startY + buttonHeight + spacing, buttonWidth, buttonHeight);
+        panel.add(gpuButton);
+        gpuButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e){
+                new showGPUInfo();
+
+                frame.dispose();
+            }
+        });
         frame.add(panel);
         frame.setVisible(true);
     }
@@ -152,5 +162,35 @@ class showDiskInfo {
         diskFrame.setSize(400, 300);
         // Add components to display Disk information here
         diskFrame.setVisible(true);
+    }
+}
+
+class showGPUInfo {
+    public showGPUInfo() {
+        JFrame gpuFrame = new JFrame("GPU Information");
+        gpuFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        gpuFrame.setSize(400, 300);
+        
+        JTextArea gpuInfoText = new JTextArea();
+        String gpuName = gpuInfo.getGPUName();
+        if (gpuName != "No GPU found") {
+            String gpuVendor = gpuInfo.getGPUVendor();
+            long gpuMemory = gpuInfo.getGPUMemory();
+            String driverVersion = gpuInfo.getGPUDriverVersion();
+
+            gpuInfoText.append("GPU Vendor: " + gpuVendor + "\n");
+            gpuInfoText.append("GPU Name: " + gpuName + "\n");
+            gpuInfoText.append("GPU Memory: " + gpuMemory + " MB\n");
+            gpuInfoText.append("GPU Driver Version: " + driverVersion + "\n");
+            gpuInfoText.setEditable(false);
+            
+        } else {
+            gpuInfoText.append(gpuName);
+        }
+
+        JScrollPane scrollPane = new JScrollPane(gpuInfoText);
+        gpuFrame.add(scrollPane);
+        
+        gpuFrame.setVisible(true);
     }
 }
