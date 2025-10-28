@@ -4,6 +4,11 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JLabel;
+import javax.swing.JTextArea;
+import javax.swing.JScrollPane;
+import javax.swing.BoxLayout;
+import java.util.ArrayList;
 
 
 public class randomGUi {
@@ -70,6 +75,16 @@ public class randomGUi {
         usbButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e){
                 new showUSBInfo();
+
+                frame.dispose();
+            }
+        });
+        JButton gpuButton = new JButton("GPU Info");
+        gpuButton.setBounds(startX + (buttonWidth + spacing) / 2 + buttonWidth + spacing, startY + buttonHeight + spacing, buttonWidth, buttonHeight);
+        panel.add(gpuButton);
+        gpuButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e){
+                new showGPUInfo();
 
                 frame.dispose();
             }
@@ -171,7 +186,28 @@ class showPCIInfo {
         JFrame pciFrame = new JFrame("PCI Information");
         pciFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         pciFrame.setSize(400, 300);
-        // Add components to display PCI information here
+
+        int pciCount = newPciInfo.getPCIBusCount();
+        ArrayList<String> pciDetails = newPciInfo.getPCIInfo();
+
+        JTextArea pciCountText = new JTextArea("Number of PCI Buses: " + pciCount);
+        JTextArea pciDetailsText = new JTextArea();
+        StringBuilder detailsBuilder = new StringBuilder();
+        for (String device : pciDetails) {
+            detailsBuilder.append(device).append("\n");
+        }
+        pciDetailsText.setText(detailsBuilder.toString());
+        pciDetailsText.setEditable(false);
+
+        JScrollPane scrollPane = new JScrollPane(pciDetailsText);
+
+
+        JPanel panel = new JPanel();
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+        panel.add(pciCountText);
+        panel.add(scrollPane);
+
+        pciFrame.add(panel);
         pciFrame.setVisible(true);
     }
 }
@@ -193,5 +229,35 @@ class showDiskInfo {
         diskFrame.setSize(400, 300);
         // Add components to display Disk information here
         diskFrame.setVisible(true);
+    }
+}
+
+class showGPUInfo {
+    public showGPUInfo() {
+        JFrame gpuFrame = new JFrame("GPU Information");
+        gpuFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        gpuFrame.setSize(400, 300);
+        
+        JTextArea gpuInfoText = new JTextArea();
+        String gpuName = gpuInfo.getGPUName();
+        if (gpuName != "No GPU found") {
+            String gpuVendor = gpuInfo.getGPUVendor();
+            long gpuMemory = gpuInfo.getGPUMemory();
+            String driverVersion = gpuInfo.getGPUDriverVersion();
+
+            gpuInfoText.append("GPU Vendor: " + gpuVendor + "\n");
+            gpuInfoText.append("GPU Name: " + gpuName + "\n");
+            gpuInfoText.append("GPU Memory: " + gpuMemory + " MB\n");
+            gpuInfoText.append("GPU Driver Version: " + driverVersion + "\n");
+            gpuInfoText.setEditable(false);
+            
+        } else {
+            gpuInfoText.append(gpuName);
+        }
+
+        JScrollPane scrollPane = new JScrollPane(gpuInfoText);
+        gpuFrame.add(scrollPane);
+        
+        gpuFrame.setVisible(true);
     }
 }
