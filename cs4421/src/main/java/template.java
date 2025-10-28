@@ -5,15 +5,23 @@
  */
 import oshi.SystemInfo;
 import oshi.hardware.CentralProcessor;
+import com.github.marandus.pciid.service.PciIdsDatabase;
+
+import java.io.IOException;
+
+import com.github.marandus.pciid.model.Vendor;
+import com.github.marandus.pciid.model.Device;
 
 
 public class template 
 {
+    static PciIdsDatabase db = new PciIdsDatabase();
     public static void showPCI()
     {
+        
         pciInfo pci = new pciInfo();
         pci.read();
-
+        
         System.out.println("\nThis machine has "+
             pci.busCount()+" PCI buses ");
 
@@ -31,11 +39,22 @@ public class template
 
                     // Iterate through up to 8 functions per device.
                     for (int k = 0; k < 8; k++) {
-                        if (pci.functionPresent (i, j, k) > 0) {
-                            System.out.println("Bus "+i+" device "+j+" function "+k+
-                                " has vendor "+String.format("0x%04X", pci.vendorID(i,j,k))+
-                                " and product "+String.format("0x%04X", pci.productID(i,j,k)));
+                        if (pci.vendorID(i, j, k) == 0 && pci.productID(i, j, k) == 0) {
+                            continue;
+                            // System.out.println("Bus " + i + " device " + j + " function " + k + " is empty");
                         }
+
+                        String vendorIdHex = String.format("%04X", pci.vendorID(i, j, k));
+                        String productIdHex = String.format("%04X", pci.productID(i, j, k));
+
+
+                        Vendor vendor = db.findVendor(vendorIdHex);
+                        Device device = db.findDevice(vendorIdHex, productIdHex);
+
+                        String vendorName = (vendor != null) ? vendor.getName() : "Unknown Vendor: 0x" + vendorIdHex;
+                        String deviceName = (device != null) ? device.getName() : "Unknown Device: 0x" + productIdHex;
+
+                        System.out.println("Bus " + i + " device " + j + " function " + k + " has vendor " + vendorName + " and product " + deviceName);
                     }
                 }
             }
@@ -109,6 +128,12 @@ public class template
 
     public static void main(String[] args)
     {
+        
+        try {
+            db.loadRemote();
+        } catch (IOException e) {
+            System.err.println("Failed to load PCI IDs: " + e.getMessage());
+        }
         System.loadLibrary("sysinfo");
         sysInfo info = new sysInfo();
         cpuInfo myCpu = new cpuInfo();
