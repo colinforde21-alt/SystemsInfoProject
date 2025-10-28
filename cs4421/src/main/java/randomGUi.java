@@ -13,6 +13,7 @@ import java.util.ArrayList;
 
 public class randomGUi {
     public static void main(String[] args) {
+        System.setProperty("sun.java2d.uiScale", "2");
         homePage();
     }
     public static void homePage() {
@@ -208,26 +209,20 @@ class showPCIInfo {
 
         int pciCount = newPciInfo.getPCIBusCount();
         ArrayList<String> pciDetails = newPciInfo.getPCIInfo();
-
-        JTextArea pciCountText = new JTextArea("Number of PCI Buses: " + pciCount);
-        JTextArea pciDetailsText = new JTextArea();
+        JTextArea pciDetailsText = new JTextArea(); 
         StringBuilder detailsBuilder = new StringBuilder();
         for (String device : pciDetails) {
             detailsBuilder.append(device).append("\n");
         }
-        pciDetailsText.setText(detailsBuilder.toString());
+        pciDetailsText.append("Device has: " + pciCount + " PCI buses\n");
+        pciDetailsText.append(detailsBuilder.toString());
         pciDetailsText.setEditable(false);
 
+
         JScrollPane scrollPane = new JScrollPane(pciDetailsText);
-
-
-        JPanel panel = new JPanel();
-        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-        panel.add(pciCountText);
-        panel.add(scrollPane);
-
-        pciFrame.add(panel);
+        pciFrame.add(scrollPane);
         pciFrame.setVisible(true);
+        
     }
 }
 
