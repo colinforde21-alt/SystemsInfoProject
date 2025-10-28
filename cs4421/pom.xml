@@ -26,6 +26,11 @@
             <groupId>org.jfree</groupId>
             <artifactId>jfreechart</artifactId>
             <version>1.5.3</version>
+        <!-- PCI Lookup-->
+        <dependency>
+            <groupId>com.github.marandus</groupId>
+            <artifactId>pci-ids</artifactId>
+            <version>0.3</version>
         </dependency>
     </dependencies>
 

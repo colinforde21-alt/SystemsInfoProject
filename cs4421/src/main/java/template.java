@@ -5,15 +5,26 @@
  */
 import oshi.SystemInfo;
 import oshi.hardware.CentralProcessor;
+import com.github.marandus.pciid.service.PciIdsDatabase;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import java.io.IOException;
+
+import com.github.marandus.pciid.model.Vendor;
+import com.github.marandus.pciid.model.Device;
 
 
 public class template 
 {
+    static PciIdsDatabase db = new PciIdsDatabase();
     public static void showPCI()
     {
+        
         pciInfo pci = new pciInfo();
         pci.read();
-
+        
         System.out.println("\nThis machine has "+
             pci.busCount()+" PCI buses ");
 
@@ -31,11 +42,22 @@ public class template
 
                     // Iterate through up to 8 functions per device.
                     for (int k = 0; k < 8; k++) {
-                        if (pci.functionPresent (i, j, k) > 0) {
-                            System.out.println("Bus "+i+" device "+j+" function "+k+
-                                " has vendor "+String.format("0x%04X", pci.vendorID(i,j,k))+
-                                " and product "+String.format("0x%04X", pci.productID(i,j,k)));
+                        if (pci.vendorID(i, j, k) == 0 && pci.productID(i, j, k) == 0) {
+                            continue;
+                            // System.out.println("Bus " + i + " device " + j + " function " + k + " is empty");
                         }
+
+                        String vendorIdHex = String.format("%04X", pci.vendorID(i, j, k));
+                        String productIdHex = String.format("%04X", pci.productID(i, j, k));
+
+
+                        Vendor vendor = db.findVendor(vendorIdHex);
+                        Device device = db.findDevice(vendorIdHex, productIdHex);
+
+                        String vendorName = (vendor != null) ? vendor.getName() : "Unknown Vendor: 0x" + vendorIdHex;
+                        String deviceName = (device != null) ? device.getName() : "Unknown Device: 0x" + productIdHex;
+
+                        System.out.println("Bus " + i + " device " + j + " function " + k + " has vendor " + vendorName + " and product " + deviceName);
                     }
                 }
             }
@@ -104,9 +126,60 @@ public class template
         System.out.println(mem.getEducationalSummary());
     }
 
+    public static void showBattery() {
+        double capacity = batteryInfo.getBatteryCapacity();
+        if (capacity != -1) {
+            String batInfo = batteryInfo.getBatteryNameAndManufacturer();
+            System.out.println(batInfo);
 
-    /*public static void main(String[] args)
+            System.out.println("Battery capacity: " + capacity + "%");
+
+            String timeRemaining = batteryInfo.getBatteryTimeRemaining();
+            System.out.println("Time remaining: " + timeRemaining);
+
+            boolean charging = batteryInfo.isBatteryCharging();
+            if (charging) {
+                System.out.println("Battery is charging.");
+            } else {
+                System.out.println("Battery is not charging.");
+            }
+        }
+        else {
+            System.out.println("No battery found.");
+        }   
+    }
+
+    public static void showGPU() {
+        String gpuName = gpuInfo.getGPUName();
+        if (gpuName != "No GPU found") {
+            String gpuVendor = gpuInfo.getGPUVendor();
+            long gpuMemory = gpuInfo.getGPUMemory();
+            String driverVersion = gpuInfo.getGPUDriverVersion();
+
+            System.out.println("GPU Vendor: " + gpuVendor);
+            System.out.println("GPU Name: " + gpuName);
+            System.out.println("GPU Memory: " + gpuMemory + " MB");
+            System.out.println("GPU Driver Version: " + driverVersion);
+            
+        } else {
+            System.out.println(gpuName);
+        }
+    }
+
+    public static void showDisplay() {
+        int displayCount = displayInfo.getDisplayCount();
+        System.out.println("Number of displays: " + displayCount);
+
+    }
+
+    public static void main(String[] args)
     {
+        
+        try {
+            db.loadRemote();
+        } catch (IOException e) {
+            System.err.println("Failed to load PCI IDs: " + e.getMessage());
+        }
         System.loadLibrary("sysinfo");
         sysInfo info = new sysInfo();
         cpuInfo myCpu = new cpuInfo();
@@ -117,11 +190,15 @@ public class template
         showUSB();
         showDisk();
         showMem();
+        showBattery();
+        showGPU();
+        showDisplay();
+        
 
-        SystemInfo si = new SystemInfo();
-        CentralProcessor cpu = si.getHardware().getProcessor();
-        System.out.println("CPU: " + cpu.getProcessorIdentifier().getName());
-    }*/
+        // SystemInfo si = new SystemInfo();
+        // CentralProcessor cpu = si.getHardware().getProcessor();
+        // System.out.println("CPU: " + cpu.getProcessorIdentifier().getName());
+    }
 }
 
 
