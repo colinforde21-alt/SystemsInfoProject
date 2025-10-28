@@ -7,6 +7,7 @@ import javax.swing.JPanel;
 import javax.swing.JLabel;
 import javax.swing.JTextArea;
 import javax.swing.JScrollPane;
+import javax.swing.SwingUtilities;
 import javax.swing.BoxLayout;
 import java.util.ArrayList;
 import java.awt.BorderLayout;
@@ -124,8 +125,28 @@ class showCpuInfo {
     public showCpuInfo() {
         JFrame cpuFrame = new JFrame("CPU Information");
         cpuFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        cpuFrame.setSize(400, 300);
-        // Add components to display CPU information here
+        cpuFrame.setSize(500, 400);
+        JTextArea area = new JTextArea();
+        area.setText(CpuInfo.getCpuSummary());
+        JScrollPane scroll = new JScrollPane(area);
+        
+
+        JButton graphButton = new JButton("Show Graph");
+        graphButton.setBounds(100, 100, 100, 40);
+        cpuFrame.add(graphButton, java.awt.BorderLayout.SOUTH);
+        cpuFrame.add(scroll);
+        graphButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e){
+                SwingUtilities.invokeLater(() -> {
+                    LiveLineChart app = new LiveLineChart("JFreeChart Live Data Example");
+                    app.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                    app.pack();
+                    app.setLocationRelativeTo(null);
+                    app.setVisible(true);
+            
+                });
+            }
+        });
         cpuFrame.setVisible(true);
     }
 }
