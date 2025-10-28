@@ -89,8 +89,18 @@ public class randomGUi {
                 frame.dispose();
             }
         });
+        JButton batteryButton = new JButton("Battery Info");
+        batteryButton.setBounds(startX + (buttonWidth + spacing) / 2 + buttonWidth + spacing, startY + buttonHeight + spacing, buttonWidth, buttonHeight);
+        panel.add(batteryButton);
+        batteryButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e){
+                new showBatteryInfo();
+                frame.dispose();
+            }
+        });
         frame.add(panel);
         frame.setVisible(true);
+
     }
 }
 
@@ -259,5 +269,41 @@ class showGPUInfo {
         gpuFrame.add(scrollPane);
 
         gpuFrame.setVisible(true);
+    }
+}
+
+class showBatteryInfo {
+    public showBatteryInfo() {
+        JFrame batteryFrame = new JFrame("Battery Information");
+        batteryFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        batteryFrame.setSize(400, 300);
+
+        JTextArea batteryInfoText = new JTextArea();
+        double capacity = batteryInfo.getBatteryCapacity();
+        if (capacity != -1) {
+            String batInfo = batteryInfo.getBatteryNameAndManufacturer();
+            batteryInfoText.append(batInfo + "\n");
+
+            batteryInfoText.append("Battery capacity: " + capacity + "%\n");
+
+            String timeRemaining = batteryInfo.getBatteryTimeRemaining();
+            batteryInfoText.append("Time remaining: " + timeRemaining + "\n");
+
+            boolean charging = batteryInfo.isBatteryCharging();
+            if (charging) {
+                batteryInfoText.append("Battery is charging.\n");
+            } else {
+                batteryInfoText.append("Battery is not charging.\n");
+            }
+        }
+        else {
+            batteryInfoText.append("No battery found.\n");
+        }   
+
+        batteryInfoText.setEditable(false);
+        JScrollPane scrollPane = new JScrollPane(batteryInfoText);
+        batteryFrame.add(scrollPane);
+
+        batteryFrame.setVisible(true);
     }
 }
