@@ -87,24 +87,24 @@ public class template
 
     public static void showCPU()
     {
-        cpuInfo myCpu = new cpuInfo();
-        myCpu.read(0);
+        //cpuInfo myCpu = new cpuInfo();
+        //myCpu.read(0);
 
         // Show CPU model, CPU sockets and cores per socket
-        System.out.println("CPU " + myCpu.getModel() + " has "+
-            myCpu.socketCount() + " sockets each with "+
-            myCpu.coresPerSocket() + " cores");
+        // System.out.println("CPU " + myCpu.getModel() + " has "+
+        //     myCpu.socketCount() + " sockets each with "+
+        //     myCpu.coresPerSocket() + " cores");
 
         // Show sizes of L1,L2 and L3 cache
-        System.out.println("l1d="+myCpu.l1dCacheSize()+
-            ", l1i="+myCpu.l1iCacheSize()+
-            ", l2="+myCpu.l2CacheSize()+
-            ", l3="+myCpu.l3CacheSize());
+        // System.out.println("l1d="+myCpu.l1dCacheSize()+
+        //     ", l1i="+myCpu.l1iCacheSize()+
+        //     ", l2="+myCpu.l2CacheSize()+
+        //     ", l3="+myCpu.l3CacheSize());
 
         // Sleep for 1 second and display the idle time percentage for
         // core 1.  This assumes 10Hz so in one second we have 100
-        myCpu.read(1);
-        System.out.println("core 1 idle="+myCpu.getIdleTime(1)+"%");
+        // myCpu.read(1);
+        // System.out.println("core 1 idle="+myCpu.getIdleTime(1)+"%");
     }
 
     public static void showDisk()

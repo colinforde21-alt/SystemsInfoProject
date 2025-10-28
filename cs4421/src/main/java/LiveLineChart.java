@@ -47,7 +47,7 @@ public class LiveLineChart extends JFrame {
     private void startDataFeed() {
         ActionListener task = event -> {
             lastX += 1.0;
-            double yValue = CpuInfo.getProcessorLoad();
+            double yValue = cpuInfo.getProcessorLoad();
             series.add(lastX, yValue);
         };
 

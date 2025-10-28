@@ -10,7 +10,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.JLabel;
 import java.lang.StringBuilder;
 
-public class CpuInfo {
+public class cpuInfo {
 
     static SystemInfo si = new SystemInfo();
     static CentralProcessor processor = si.getHardware().getProcessor();

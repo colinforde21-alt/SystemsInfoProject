@@ -127,7 +127,7 @@ class showCpuInfo {
         cpuFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         cpuFrame.setSize(500, 400);
         JTextArea area = new JTextArea();
-        area.setText(CpuInfo.getCpuSummary());
+        area.setText(cpuInfo.getCpuSummary());
         JScrollPane scroll = new JScrollPane(area);
         
 
@@ -248,7 +248,7 @@ class showCpuInfo {
             g.setColor(Color.BLACK);
             g.drawRect(x, y, width, height);
         }
-    }*/
+    }
 }
 
 
