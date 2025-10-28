@@ -2,6 +2,7 @@ cpuInfo.class
 pciInfo.class
 batteryInfo.class
 memInfo.class
+displayInfo.class
 diskInfo.class
 usbInfo.class
 gpuInfo.class

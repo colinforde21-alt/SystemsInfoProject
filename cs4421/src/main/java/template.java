@@ -7,6 +7,9 @@ import oshi.SystemInfo;
 import oshi.hardware.CentralProcessor;
 import com.github.marandus.pciid.service.PciIdsDatabase;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import java.io.IOException;
 
 import com.github.marandus.pciid.model.Vendor;
@@ -166,6 +169,12 @@ public class template
         }
     }
 
+    public static void showDisplay() {
+        int displayCount = displayInfo.getDisplayCount();
+        System.out.println("Number of displays: " + displayCount);
+
+    }
+
     public static void main(String[] args)
     {
         
@@ -186,6 +195,7 @@ public class template
         showMem();
         showBattery();
         showGPU();
+        showDisplay();
         
 
         // SystemInfo si = new SystemInfo();
