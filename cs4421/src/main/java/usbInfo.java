@@ -160,8 +160,22 @@ public class usbInfo
     }
 
     
-
-
+    public String displayUSBInfo() {
+        StringBuilder usbInformation = new StringBuilder();
+        int buses = busCount();
+        usbInformation.append("Number of USB Buses: " + buses + "\n");
+        for (int bus = 0; bus < buses; bus++) {
+            int devices = deviceCount(bus);
+            usbInformation.append("Bus " + bus + " - Number of Devices: " + devices + "\n");
+            for (int device = 0; device < devices; device++) {
+                usbInformation.append("  Device " + device + ":\n");
+                usbInformation.append("Vendor ID: 0x" + String.format("%04X", vendorID(bus, device)) + " (" + vendorType(bus, device) + ")\n");
+                usbInformation.append("Product ID: 0x" + String.format("%04X", productID(bus, device)) + "\n");
+                usbInformation.append("Device Type: " + deviceType(bus, device) + "\n");
+            }
+        }
+        return usbInformation.toString();
+    }
 }
 
 
