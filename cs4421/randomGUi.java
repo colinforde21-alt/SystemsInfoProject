@@ -90,14 +90,81 @@ class showCpuInfo {
 }
 
 class showMemInfo {
+    private memInfo mem;
+    private JLabel totalLabel, usedLabel, freeLabel, percentLabel;
+    private MemoryBarPanel barPanel;
+
     public showMemInfo() {
+        mem = new memInfo();
+
         JFrame memFrame = new JFrame("Memory Information");
         memFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         memFrame.setSize(400, 300);
-        // Add components to display Memory information here
+        memFrame.setLayout(new BorderLayout());
+
+        JPanel infoPanel = new JPanel(new GridLayout(4, 1));
+        totalLabel = new JLabel();
+        usedLabel = new JLabel();
+        freeLabel = new JLabel();
+        percentLabel = new JLabel();
+
+        infoPanel.add(totalLabel);
+        infoPanel.add(usedLabel);
+        infoPanel.add(freeLabel);
+        infoPanel.add(percentLabel);
+
+        JButton refreshButton = new JButton("Refresh");
+        refreshButton.addActionListener(e -> updateInfo());
+
+        barPanel = new MemoryBarPanel();
+
+        memFrame.add(infoPanel, BorderLayout.NORTH);
+        memFrame.add(barPanel, BorderLayout.CENTER);
+        memFrame.add(refreshButton, BorderLayout.SOUTH);
+
+        updateInfo();
+
         memFrame.setVisible(true);
     }
+
+    private void updateInfo() {
+        mem.read(); // Loads the memory info
+        totalLabel.setText("Total Memory: " + mem.getTotal() + " KB");
+        usedLabel.setText("Used Memory: " + mem.getUsed() + " KB");
+        freeLabel.setText("Free Memory: " + mem.getFree() + " KB");
+        percentLabel.setText("Percent Used: " + String.format("%.2f%%", mem.getPercentUsed()));
+        barPanel.repaint();
+    }
+
+    // Inner class for the horizontal bar graph
+    class MemoryBarPanel extends JPanel {
+        @Override
+        protected void paintComponent(Graphics g) {
+            super.paintComponent(g);
+            int width = getWidth() - 60;
+            int height = 40;
+            int x = 30, y = 30;
+            int total = mem.getTotal();
+            int used = mem.getUsed();
+            if (total == 0) return;
+            int usedBarWidth = (int)((double)used/total * width);
+            int freeBarWidth = width - usedBarWidth;
+
+            // Used (red)
+            g.setColor(Color.RED);
+            g.fillRect(x, y, usedBarWidth, height);
+
+            // Free (green)
+            g.setColor(Color.GREEN);
+            g.fillRect(x + usedBarWidth, y, freeBarWidth, height);
+
+            // Border
+            g.setColor(Color.BLACK);
+            g.drawRect(x, y, width, height);
+        }
+    }
 }
+
 
 class showPCIInfo {
     public showPCIInfo() {
