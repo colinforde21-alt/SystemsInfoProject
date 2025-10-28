@@ -105,7 +105,7 @@ public class template
     }
 
 
-    public static void main(String[] args)
+    /*public static void main(String[] args)
     {
         System.loadLibrary("sysinfo");
         sysInfo info = new sysInfo();
@@ -121,7 +121,7 @@ public class template
         SystemInfo si = new SystemInfo();
         CentralProcessor cpu = si.getHardware().getProcessor();
         System.out.println("CPU: " + cpu.getProcessorIdentifier().getName());
-    }
+    }*/
 }
 
 
