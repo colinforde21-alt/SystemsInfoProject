@@ -44,7 +44,7 @@ public class randomGUi {
         panel.add(diskButton);
         diskButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e){
-                new showCpuInfo();
+                new showDiskInfo();
 
                 frame.dispose();
             }
@@ -105,7 +105,7 @@ class showCpuInfo {
 }
 
 class showMemInfo {
-    private memInfo mem;
+    /*private memInfo mem;
     private JLabel totalLabel, usedLabel, freeLabel, percentLabel;
     private MemoryBarPanel barPanel;
 
@@ -177,7 +177,7 @@ class showMemInfo {
             g.setColor(Color.BLACK);
             g.drawRect(x, y, width, height);
         }
-    }
+    }*/
 }
 
 
@@ -217,17 +217,27 @@ class showUSBInfo {
         JFrame usbFrame = new JFrame("USB Information");
         usbFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         usbFrame.setSize(400, 300);
-        // Add components to display USB information here
+        usbInfo usb = new usbInfo();
+        usb.read();
+        JTextArea usbInfoText = new JTextArea();
+        usbInfoText.setText(usb.displayUSBInfo());
+        usbInfoText.setEditable(false);
+        
         usbFrame.setVisible(true);
     }
 }
 
 class showDiskInfo {
     public showDiskInfo() {
+        diskInfo disk = new diskInfo();
+        disk.read();
         JFrame diskFrame = new JFrame("Disk Information");
         diskFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         diskFrame.setSize(400, 300);
-        // Add components to display Disk information here
+        JTextArea diskInfoText = new JTextArea();
+        diskInfoText.setText(disk.displayDiskInfo());
+        diskInfoText.setEditable(false);
+        
         diskFrame.setVisible(true);
     }
 }
