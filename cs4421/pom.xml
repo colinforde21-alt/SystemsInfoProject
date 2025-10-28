@@ -21,16 +21,17 @@
             <artifactId>oshi-core</artifactId>
             <version>6.6.5</version>
         </dependency>
+        <!-- PCI Lookup -->
+        <dependency>
+            <groupId>com.github.marandus</groupId>
+            <artifactId>pci-ids</artifactId>
+            <version>0.3</version>
+        </dependency>
         <!-- JFreeChart for charting -->
         <dependency>
             <groupId>org.jfree</groupId>
             <artifactId>jfreechart</artifactId>
             <version>1.5.3</version>
-        <!-- PCI Lookup-->
-        <dependency>
-            <groupId>com.github.marandus</groupId>
-            <artifactId>pci-ids</artifactId>
-            <version>0.3</version>
         </dependency>
     </dependencies>
 

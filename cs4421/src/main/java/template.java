@@ -18,7 +18,7 @@ import com.github.marandus.pciid.model.Device;
 
 public class template 
 {
-    static PciIdsDatabase db = new PciIdsDatabase();
+    /*static PciIdsDatabase db = new PciIdsDatabase();
     public static void showPCI()
     {
         
@@ -62,7 +62,7 @@ public class template
                 }
             }
         }
-    }
+    }*/
 
     public static void showUSB()
     {
@@ -172,33 +172,38 @@ public class template
 
     }
 
-    public static void main(String[] args)
-    {
+//     public static void main(String[] args)
+//     {
         
-        try {
-            db.loadRemote();
-        } catch (IOException e) {
-            System.err.println("Failed to load PCI IDs: " + e.getMessage());
-        }
-        System.loadLibrary("sysinfo");
-        sysInfo info = new sysInfo();
-        cpuInfo myCpu = new cpuInfo();
-        myCpu.read(0);
+//         /*try {
+//             db.loadRemote();
+//         } catch (IOException e) {
+//             System.err.println("Failed to load PCI IDs: " + e.getMessage());
+//         }*/
+//         System.loadLibrary("sysinfo");
+//         sysInfo info = new sysInfo();
+//         cpuInfo myCpu = new cpuInfo();
+//         myCpu.read(0);
         
-        showCPU();
-        showPCI();
-        showUSB();
-        showDisk();
-        showMem();
-        showBattery();
-        showGPU();
-        showDisplay();
+//         showCPU();
+//         //showPCI();
+//         showUSB();
+//         showDisk();
+//         showMem();
+//         showBattery();
+//         showGPU();
+//         showDisplay();
+//         System.out.println("Device has: " + newPciInfo.getPCIBusCount() + " PCI buses");
+//         ArrayList<String> myPciInfo = newPciInfo.getPCIInfo();
+//         for (String pciDevice : myPciInfo) {
+//             System.out.println(pciDevice);
+//         }
         
 
-        // SystemInfo si = new SystemInfo();
-        // CentralProcessor cpu = si.getHardware().getProcessor();
-        // System.out.println("CPU: " + cpu.getProcessorIdentifier().getName());
-    }
+//         // SystemInfo si = new SystemInfo();
+//         // CentralProcessor cpu = si.getHardware().getProcessor();
+//         // System.out.println("CPU: " + cpu.getProcessorIdentifier().getName());
+//     }
 }
 
 

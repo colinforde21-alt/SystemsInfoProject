@@ -4,6 +4,11 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JLabel;
+import javax.swing.JTextArea;
+import javax.swing.JScrollPane;
+import javax.swing.BoxLayout;
+import java.util.ArrayList;
 
 
 public class randomGUi {
@@ -104,7 +109,28 @@ class showPCIInfo {
         JFrame pciFrame = new JFrame("PCI Information");
         pciFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         pciFrame.setSize(400, 300);
-        // Add components to display PCI information here
+
+        int pciCount = newPciInfo.getPCIBusCount();
+        ArrayList<String> pciDetails = newPciInfo.getPCIInfo();
+
+        JTextArea pciCountText = new JTextArea("Number of PCI Buses: " + pciCount);
+        JTextArea pciDetailsText = new JTextArea();
+        StringBuilder detailsBuilder = new StringBuilder();
+        for (String device : pciDetails) {
+            detailsBuilder.append(device).append("\n");
+        }
+        pciDetailsText.setText(detailsBuilder.toString());
+        pciDetailsText.setEditable(false);
+
+        JScrollPane scrollPane = new JScrollPane(pciDetailsText);
+
+
+        JPanel panel = new JPanel();
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+        panel.add(pciCountText);
+        panel.add(scrollPane);
+
+        pciFrame.add(panel);
         pciFrame.setVisible(true);
     }
 }
