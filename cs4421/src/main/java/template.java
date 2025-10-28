@@ -126,6 +126,33 @@ public class template
             mem.getUsed()+" is used");
     }
 
+    public static void showBattery() {
+        
+
+        double capacity = batteryInfo.getBatteryCapacity();
+        if (capacity != -1) {
+            String batInfo = batteryInfo.getBatteryNameAndManufacturer();
+            System.out.println(batInfo);
+
+            System.out.println("Battery capacity: " + capacity + "%");
+
+            String timeRemaining = batteryInfo.getBatteryTimeRemaining();
+            System.out.println("Time remaining: " + timeRemaining);
+
+            boolean charging = batteryInfo.isBatteryCharging();
+            if (charging) {
+                System.out.println("Battery is charging.");
+            } else {
+                System.out.println("Battery is not charging.");
+            }
+        }
+        else {
+            System.out.println("No battery found.");
+        }
+
+        
+    }
+
     public static void main(String[] args)
     {
         
@@ -144,6 +171,8 @@ public class template
         showUSB();
         showDisk();
         showMem();
+        showBattery();
+        
 
         SystemInfo si = new SystemInfo();
         CentralProcessor cpu = si.getHardware().getProcessor();

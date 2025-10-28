@@ -1,5 +1,6 @@
 cpuInfo.class
 pciInfo.class
+batteryInfo.class
 memInfo.class
 diskInfo.class
 usbInfo.class
