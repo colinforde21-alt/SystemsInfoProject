@@ -50,8 +50,119 @@ public class usbInfo
             default: return "Unknown Vendor";
         }
     }
+
+    public String deviceType(int bus, int device) {
+        String vendor = vendorType(bus, device).toLowerCase();
+
+        if (vendor.contains("logitech")) {
+            return "Peripheral (Keyboard/Mouse/Webcam)";
+        } else if (vendor.contains("apple")) {
+            return "Mobile / Peripheral / Accessory";
+        } else if (vendor.contains("sandisk")) {
+            return "Storage Device (USB Drive)";
+        } else if (vendor.contains("intel")) {
+            return "Chipset / Internal Controller";
+        } else if (vendor.contains("microsoft")) {
+            return "Peripheral / Accessory";
+        } else if (vendor.contains("google")) {
+            return "Mobile / Development Device";
+        } else if (vendor.contains("realtek")) {
+            return "Network Adapter / Audio / Internal Chip";
+        } else if (vendor.contains("sony")) {
+            return "Entertainment Device";
+        } else if (vendor.contains("huawei")) {
+            return "Mobile Modem / Network Device";
+        } else if (vendor.contains("terminus")) {
+            return "USB Hub Controller";
+        } else if (vendor.contains("mediatek")) {
+            return "Chipset / Network / Mobile Controller";
+        } else if (vendor.contains("razer")) {
+            return "Gaming Peripheral";
+        } else if (vendor.contains("dji")) {
+            return "Camera / Drone Device";
+        } else if (vendor.contains("bitmain")) {
+            return "Mining / Compute Hardware";
+        } else if (vendor.contains("tp-link")) {
+            return "Network Adapter / Router Interface";
+        } else if (vendor.contains("samsung")) {
+            return "Storage / Mobile / Peripheral Device";
+        } else if (vendor.contains("microdia")) {
+            return "Imaging Device (Webcam)";
+        } else if (vendor.contains("linux foundation")) {
+            return "System Virtual / Composite Device";
+        } else if (vendor.contains("future technology devices")) {
+            return "USB Serial Converter / Development Board";
+        } else if (vendor.contains("silicon labs")) {
+            return "Serial Interface / Microcontroller";
+        } else if (vendor.contains("cypress")) {
+            return "Microcontroller / Development Board";
+        } else if (vendor.contains("broadcom")) {
+            return "Wireless / Bluetooth Controller";
+        } else if (vendor.contains("toshiba")) {
+            return "Storage Device / Flash Memory";
+        } else {
+            return "Miscellaneous / Unknown Device";
+        }
+    }
+
+    public String deviceType(int bus, int device) {
+        String vendor = vendorType(bus, device).toLowerCase();
+
+        if (vendor.contains("logitech")) {
+            return "Peripheral (Keyboard/Mouse/Webcam)";
+        } else if (vendor.contains("apple")) {
+            return "Mobile / Peripheral / Accessory";
+        } else if (vendor.contains("sandisk")) {
+            return "Storage Device (USB Drive)";
+        } else if (vendor.contains("intel")) {
+            return "Chipset / Internal Controller";
+        } else if (vendor.contains("microsoft")) {
+            return "Peripheral / Accessory";
+        } else if (vendor.contains("google")) {
+            return "Mobile / Development Device";
+        } else if (vendor.contains("realtek")) {
+            return "Network Adapter / Audio / Internal Chip";
+        } else if (vendor.contains("sony")) {
+            return "Entertainment Device";
+        } else if (vendor.contains("huawei")) {
+            return "Mobile Modem / Network Device";
+        } else if (vendor.contains("terminus")) {
+            return "USB Hub Controller";
+        } else if (vendor.contains("mediatek")) {
+            return "Chipset / Network / Mobile Controller";
+        } else if (vendor.contains("razer")) {
+            return "Gaming Peripheral";
+        } else if (vendor.contains("dji")) {
+            return "Camera / Drone Device";
+        } else if (vendor.contains("bitmain")) {
+            return "Mining / Compute Hardware";
+        } else if (vendor.contains("tp-link")) {
+            return "Network Adapter / Router Interface";
+        } else if (vendor.contains("samsung")) {
+            return "Storage / Mobile / Peripheral Device";
+        } else if (vendor.contains("microdia")) {
+            return "Imaging Device (Webcam)";
+        } else if (vendor.contains("linux foundation")) {
+            return "System Virtual / Composite Device";
+        } else if (vendor.contains("future technology devices")) {
+            return "USB Serial Converter / Development Board";
+        } else if (vendor.contains("silicon labs")) {
+            return "Serial Interface / Microcontroller";
+        } else if (vendor.contains("cypress")) {
+            return "Microcontroller / Development Board";
+        } else if (vendor.contains("broadcom")) {
+            return "Wireless / Bluetooth Controller";
+        } else if (vendor.contains("toshiba")) {
+            return "Storage Device / Flash Memory";
+        } else {
+            return "Miscellaneous / Unknown Device";
+        }
+    }
+
     
 
+
 }
+
 
         

@@ -8,6 +8,8 @@ import javax.swing.JLabel;
 import javax.swing.JTextArea;
 import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
+import javax.swing.BoxLayout;
+import java.util.ArrayList;
 
 
 public class randomGUi {
@@ -33,7 +35,6 @@ public class randomGUi {
         CPUbutton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e){
                 new showCpuInfo();
-                
 
                 frame.dispose();
             }
@@ -79,6 +80,16 @@ public class randomGUi {
                 frame.dispose();
             }
         });
+        JButton gpuButton = new JButton("GPU Info");
+        gpuButton.setBounds(startX + (buttonWidth + spacing) / 2 + buttonWidth + spacing, startY + buttonHeight + spacing, buttonWidth, buttonHeight);
+        panel.add(gpuButton);
+        gpuButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e){
+                new showGPUInfo();
+
+                frame.dispose();
+            }
+        });
         frame.add(panel);
         frame.setVisible(true);
     }
@@ -115,21 +126,109 @@ class showCpuInfo {
 }
 
 class showMemInfo {
+    private memInfo mem;
+    private JLabel totalLabel, usedLabel, freeLabel, percentLabel;
+    private MemoryBarPanel barPanel;
+
     public showMemInfo() {
+        mem = new memInfo();
+
         JFrame memFrame = new JFrame("Memory Information");
         memFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         memFrame.setSize(400, 300);
-        // Add components to display Memory information here
+        memFrame.setLayout(new BorderLayout());
+
+        JPanel infoPanel = new JPanel(new GridLayout(4, 1));
+        totalLabel = new JLabel();
+        usedLabel = new JLabel();
+        freeLabel = new JLabel();
+        percentLabel = new JLabel();
+
+        infoPanel.add(totalLabel);
+        infoPanel.add(usedLabel);
+        infoPanel.add(freeLabel);
+        infoPanel.add(percentLabel);
+
+        JButton refreshButton = new JButton("Refresh");
+        refreshButton.addActionListener(e -> updateInfo());
+
+        barPanel = new MemoryBarPanel();
+
+        memFrame.add(infoPanel, BorderLayout.NORTH);
+        memFrame.add(barPanel, BorderLayout.CENTER);
+        memFrame.add(refreshButton, BorderLayout.SOUTH);
+
+        updateInfo();
+
         memFrame.setVisible(true);
     }
+
+    private void updateInfo() {
+        mem.read(); // Loads the memory info
+        totalLabel.setText("Total Memory: " + mem.getTotal() + " KB");
+        usedLabel.setText("Used Memory: " + mem.getUsed() + " KB");
+        freeLabel.setText("Free Memory: " + mem.getFree() + " KB");
+        percentLabel.setText("Percent Used: " + String.format("%.2f%%", mem.getPercentUsed()));
+        barPanel.repaint();
+    }
+
+    // Inner class for the horizontal bar graph
+    class MemoryBarPanel extends JPanel {
+        @Override
+        protected void paintComponent(Graphics g) {
+            super.paintComponent(g);
+            int width = getWidth() - 60;
+            int height = 40;
+            int x = 30, y = 30;
+            int total = mem.getTotal();
+            int used = mem.getUsed();
+            if (total == 0) return;
+            int usedBarWidth = (int)((double)used/total * width);
+            int freeBarWidth = width - usedBarWidth;
+
+            // Used (red)
+            g.setColor(Color.RED);
+            g.fillRect(x, y, usedBarWidth, height);
+
+            // Free (green)
+            g.setColor(Color.GREEN);
+            g.fillRect(x + usedBarWidth, y, freeBarWidth, height);
+
+            // Border
+            g.setColor(Color.BLACK);
+            g.drawRect(x, y, width, height);
+        }
+    }
 }
+
 
 class showPCIInfo {
     public showPCIInfo() {
         JFrame pciFrame = new JFrame("PCI Information");
         pciFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         pciFrame.setSize(400, 300);
-        // Add components to display PCI information here
+
+        int pciCount = newPciInfo.getPCIBusCount();
+        ArrayList<String> pciDetails = newPciInfo.getPCIInfo();
+
+        JTextArea pciCountText = new JTextArea("Number of PCI Buses: " + pciCount);
+        JTextArea pciDetailsText = new JTextArea();
+        StringBuilder detailsBuilder = new StringBuilder();
+        for (String device : pciDetails) {
+            detailsBuilder.append(device).append("\n");
+        }
+        pciDetailsText.setText(detailsBuilder.toString());
+        pciDetailsText.setEditable(false);
+
+        JScrollPane scrollPane = new JScrollPane(pciDetailsText);
+
+
+        JPanel panel = new JPanel();
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+        panel.add(pciCountText);
+        panel.add(scrollPane);
+
+        pciFrame.add(panel);
         pciFrame.setVisible(true);
     }
 }
@@ -151,5 +250,35 @@ class showDiskInfo {
         diskFrame.setSize(400, 300);
         // Add components to display Disk information here
         diskFrame.setVisible(true);
+    }
+}
+
+class showGPUInfo {
+    public showGPUInfo() {
+        JFrame gpuFrame = new JFrame("GPU Information");
+        gpuFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        gpuFrame.setSize(400, 300);
+        
+        JTextArea gpuInfoText = new JTextArea();
+        String gpuName = gpuInfo.getGPUName();
+        if (gpuName != "No GPU found") {
+            String gpuVendor = gpuInfo.getGPUVendor();
+            long gpuMemory = gpuInfo.getGPUMemory();
+            String driverVersion = gpuInfo.getGPUDriverVersion();
+
+            gpuInfoText.append("GPU Vendor: " + gpuVendor + "\n");
+            gpuInfoText.append("GPU Name: " + gpuName + "\n");
+            gpuInfoText.append("GPU Memory: " + gpuMemory + " MB\n");
+            gpuInfoText.append("GPU Driver Version: " + driverVersion + "\n");
+            gpuInfoText.setEditable(false);
+            
+        } else {
+            gpuInfoText.append(gpuName);
+        }
+
+        JScrollPane scrollPane = new JScrollPane(gpuInfoText);
+        gpuFrame.add(scrollPane);
+        
+        gpuFrame.setVisible(true);
     }
 }
