@@ -18,6 +18,7 @@ import java.awt.GridLayout;
 
 
 
+
 public class randomGUi {
     public static void main(String[] args) {
         System.setProperty("sun.java2d.uiScale", "2");
@@ -141,14 +142,22 @@ class showCpuInfo {
         JScrollPane scroll = new JScrollPane(area);
         
 
-        JButton graphButton = new JButton("Show Graph");
-        graphButton.setBounds(100, 100, 100, 40);
+        JButton graphButton = new JButton("Show Live Processor Data Feed");
+        graphButton.setBounds(300, 100, 220, 40);
         cpuFrame.add(graphButton, java.awt.BorderLayout.SOUTH);
         cpuFrame.add(scroll);
         graphButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e){
                 SwingUtilities.invokeLater(() -> {
                     LiveLineChart app = new LiveLineChart("JFreeChart Live Data Example");
+                    JButton goHome = new JButton("Go To Home");
+                    goHome.addActionListener(new ActionListener() {
+                        public void actionPerformed(ActionEvent e){
+                            randomGUi.homePage();
+                            app.dispose();
+                        }
+                    });
+        cpuFrame.add(goHome, java.awt.BorderLayout.SOUTH);
                     app.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
                     app.pack();
                     app.setLocationRelativeTo(null);
@@ -157,6 +166,17 @@ class showCpuInfo {
                 });
             }
         });
+
+        JButton goHome = new JButton("Go To Home");
+        goHome.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e){
+                    randomGUi.homePage();
+                    cpuFrame.dispose();
+                }
+            });
+        cpuFrame.add(goHome, java.awt.BorderLayout.SOUTH);
+        cpuFrame.setVisible(true);
+
         cpuFrame.setVisible(true);
     }
 }
@@ -185,6 +205,9 @@ class showCpuInfo {
         infoPanel.add(freeLabel);
         infoPanel.add(percentLabel);
 
+        JPanel buttons = new JPanel();
+        buttons.setLayout(new BoxLayout(buttons, BoxLayout.X_AXIS));
+
         JButton refreshButton = new JButton("Refresh");
         refreshButton.addActionListener(e -> updateInfo());
 
@@ -193,6 +216,20 @@ class showCpuInfo {
         memFrame.add(infoPanel, BorderLayout.NORTH);
         memFrame.add(barPanel, BorderLayout.CENTER);
         memFrame.add(refreshButton, BorderLayout.SOUTH);
+
+        
+        JButton goHome = new JButton("Go To Home");
+        goHome.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e){
+                    randomGUi.homePage();
+                    memFrame.dispose();
+                }
+            });
+        
+        buttons.add(refreshButton);
+        buttons.add(goHome);
+        memFrame.add(buttons, BorderLayout.SOUTH);
+        memFrame.setVisible(true);
 
         updateInfo();
 
@@ -282,6 +319,17 @@ class showPCIInfo {
 
         JScrollPane scrollPane = new JScrollPane(pciDetailsText);
         pciFrame.add(scrollPane);
+
+        JButton goHome = new JButton("Go To Home");
+        goHome.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e){
+                    randomGUi.homePage();
+                    pciFrame.dispose();
+                }
+            });
+        pciFrame.add(goHome, java.awt.BorderLayout.SOUTH);
+        pciFrame.setVisible(true);
+
         pciFrame.setVisible(true);
         
     }
@@ -298,6 +346,16 @@ class showUSBInfo {
         usbInfoText.setText(usb.displayUSBInfo());
         usbInfoText.setEditable(false);
         
+        JButton goHome = new JButton("Go To Home");
+        goHome.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e){
+                    randomGUi.homePage();
+                    usbFrame.dispose();
+                }
+            });
+        usbFrame.add(goHome, java.awt.BorderLayout.SOUTH);
+        usbFrame.setVisible(true);
+
         usbFrame.setVisible(true);
     }
 }
@@ -312,6 +370,16 @@ class showDiskInfo {
         JTextArea diskInfoText = new JTextArea();
         diskInfoText.setText(disk.displayDiskInfo());
         diskInfoText.setEditable(false);
+
+        JButton goHome = new JButton("Go To Home");
+        goHome.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e){
+                    randomGUi.homePage();
+                    diskFrame.dispose();
+                }
+            });
+        diskFrame.add(goHome, java.awt.BorderLayout.SOUTH);
+        diskFrame.setVisible(true);
         
         diskFrame.setVisible(true);
     }
@@ -342,6 +410,16 @@ class showGPUInfo {
 
         JScrollPane scrollPane = new JScrollPane(gpuInfoText);
         gpuFrame.add(scrollPane);
+
+        JButton goHome = new JButton("Go To Home");
+        goHome.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e){
+                    randomGUi.homePage();
+                    gpuFrame.dispose();
+                }
+            });
+        gpuFrame.add(goHome, java.awt.BorderLayout.SOUTH);
+        gpuFrame.setVisible(true);
 
         gpuFrame.setVisible(true);
     }
@@ -378,6 +456,16 @@ class showBatteryInfo {
         batteryInfoText.setEditable(false);
         JScrollPane scrollPane = new JScrollPane(batteryInfoText);
         batteryFrame.add(scrollPane);
+        
+        JButton goHome = new JButton("Go To Home");
+        goHome.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e){
+                    randomGUi.homePage();
+                    batteryFrame.dispose();
+                }
+            });
+        batteryFrame.add(goHome, java.awt.BorderLayout.SOUTH);
+        batteryFrame.setVisible(true);
 
         batteryFrame.setVisible(true);
     }
@@ -400,6 +488,16 @@ class showDisplayInfo {
         JScrollPane scrollPane = new JScrollPane(displayInfoText);
         displayFrame.add(scrollPane);
 
+        JButton goHome = new JButton("Go To Home");
+        goHome.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e){
+                    randomGUi.homePage();
+                    displayFrame.dispose();
+                }
+            });
+        displayFrame.add(goHome, java.awt.BorderLayout.SOUTH);
+        displayFrame.setVisible(true);
+
         displayFrame.setVisible(true);
     }
 }
@@ -419,6 +517,14 @@ class displayMotherboardInfo {
         JScrollPane scrollPane = new JScrollPane(mbInfoText);
         mbFrame.add(scrollPane);
 
+        JButton goHome = new JButton("Go To Home");
+        goHome.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e){
+                    randomGUi.homePage();
+                    mbFrame.dispose();
+                }
+            });
+        mbFrame.add(goHome, java.awt.BorderLayout.SOUTH);
         mbFrame.setVisible(true);
     }
 }
