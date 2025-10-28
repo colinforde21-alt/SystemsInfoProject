@@ -9,6 +9,12 @@ import javax.swing.JTextArea;
 import javax.swing.JScrollPane;
 import javax.swing.BoxLayout;
 import java.util.ArrayList;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.GridLayout;
+
+
 
 
 public class randomGUi {
@@ -125,79 +131,103 @@ class showCpuInfo {
 }
 
  class showMemInfo {
-//     private memInfo mem;
-//     private JLabel totalLabel, usedLabel, freeLabel, percentLabel;
-//     private MemoryBarPanel barPanel;
+    private memInfo mem;
+    private JLabel totalLabel, usedLabel, freeLabel, percentLabel;
+    private MemoryBarPanel barPanel;
 
-//     public showMemInfo() {
-//         mem = new memInfo();
+    public showMemInfo() {
+        mem = new memInfo();
 
-//         JFrame memFrame = new JFrame("Memory Information");
-//         memFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-//         memFrame.setSize(400, 300);
-//         memFrame.setLayout(new BorderLayout());
+        JFrame memFrame = new JFrame("Memory Information");
+        memFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        memFrame.setSize(400, 300);
+        memFrame.setLayout(new BorderLayout());
 
-//         JPanel infoPanel = new JPanel(new GridLayout(4, 1));
-//         totalLabel = new JLabel();
-//         usedLabel = new JLabel();
-//         freeLabel = new JLabel();
-//         percentLabel = new JLabel();
+        JPanel infoPanel = new JPanel(new GridLayout(4, 1));
+        totalLabel = new JLabel();
+        usedLabel = new JLabel();
+        freeLabel = new JLabel();
+        percentLabel = new JLabel();
 
-//         infoPanel.add(totalLabel);
-//         infoPanel.add(usedLabel);
-//         infoPanel.add(freeLabel);
-//         infoPanel.add(percentLabel);
+        infoPanel.add(totalLabel);
+        infoPanel.add(usedLabel);
+        infoPanel.add(freeLabel);
+        infoPanel.add(percentLabel);
 
-//         JButton refreshButton = new JButton("Refresh");
-//         refreshButton.addActionListener(e -> updateInfo());
+        JButton refreshButton = new JButton("Refresh");
+        refreshButton.addActionListener(e -> updateInfo());
 
-//         barPanel = new MemoryBarPanel();
+        barPanel = new MemoryBarPanel();
 
-//         memFrame.add(infoPanel, BorderLayout.NORTH);
-//         memFrame.add(barPanel, BorderLayout.CENTER);
-//         memFrame.add(refreshButton, BorderLayout.SOUTH);
+        memFrame.add(infoPanel, BorderLayout.NORTH);
+        memFrame.add(barPanel, BorderLayout.CENTER);
+        memFrame.add(refreshButton, BorderLayout.SOUTH);
 
-//         updateInfo();
+        updateInfo();
 
-//         memFrame.setVisible(true);
-//     }
+        memFrame.setVisible(true);
+    }
 
-//     private void updateInfo() {
-//         mem.read(); // Loads the memory info
-//         totalLabel.setText("Total Memory: " + mem.getTotal() + " KB");
-//         usedLabel.setText("Used Memory: " + mem.getUsed() + " KB");
-//         freeLabel.setText("Free Memory: " + mem.getFree() + " KB");
-//         percentLabel.setText("Percent Used: " + String.format("%.2f%%", mem.getPercentUsed()));
-//         barPanel.repaint();
-//     }
+    private void updateInfo() {
+        try {
+            mem.read(); // Loads the memory info
+            totalLabel.setText("Total Memory: " + mem.getTotal() + " KB");
+            usedLabel.setText("Used Memory: " + mem.getUsed() + " KB");
+            freeLabel.setText("Free Memory: " + mem.getFree() + " KB");
+            percentLabel.setText("Percent Used: " + String.format("%.2f%%", mem.getPercentUsed()));
+        } catch (UnsatisfiedLinkError e) {
+            // Fallback to Runtime if native library fails
+            Runtime runtime = Runtime.getRuntime();
+            long total = runtime.totalMemory() / 1024; // KB
+            long free = runtime.freeMemory() / 1024;   // KB
+            long max = runtime.maxMemory() / 1024;     // KB
+            long used = total - free;
+            double percent = (double) used / max * 100.0;
+            totalLabel.setText("Total Memory: " + max + " KB (Fallback)");
+            usedLabel.setText("Used Memory: " + used + " KB (Fallback)");
+            freeLabel.setText("Free Memory: " + free + " KB (Fallback)");
+            percentLabel.setText("Percent Used: " + String.format("%.2f%% (Fallback)", percent));
+        }
+        barPanel.repaint();
+    }
 
-//     // Inner class for the horizontal bar graph
-//     // class MemoryBarPanel extends JPanel {
-//     //     @Override
-//     //     protected void paintComponent(Graphics g) {
-//     //         super.paintComponent(g);
-//     //         int width = getWidth() - 60;
-//     //         int height = 40;
-//     //         int x = 30, y = 30;
-//     //         int total = mem.getTotal();
-//     //         int used = mem.getUsed();
-//     //         if (total == 0) return;
-//     //         int usedBarWidth = (int)((double)used/total * width);
-//     //         int freeBarWidth = width - usedBarWidth;
+    // Inner class for the horizontal bar graph
+    class MemoryBarPanel extends JPanel {
+        @Override
+        protected void paintComponent(Graphics g) {
+            super.paintComponent(g);
+            int width = getWidth() - 60;
+            int height = 40;
+            int x = 30, y = 30;
+            long total = 0;
+            long used = 0;
+            try {
+                total = mem.getTotal();
+                used = mem.getUsed();
+            } catch (UnsatisfiedLinkError e) {
+                // Fallback values
+                Runtime runtime = Runtime.getRuntime();
+                total = runtime.maxMemory() / 1024;
+                long free = runtime.freeMemory() / 1024;
+                used = (runtime.totalMemory() / 1024) - free;
+            }
+            if (total == 0) return;
+            int usedBarWidth = (int)((double)used/total * width);
+            int freeBarWidth = width - usedBarWidth;
 
-//     //         // Used (red)
-//     //         g.setColor(Color.RED);
-//     //         g.fillRect(x, y, usedBarWidth, height);
+            // Used (red)
+            g.setColor(Color.RED);
+            g.fillRect(x, y, usedBarWidth, height);
 
-//     //         // Free (green)
-//     //         g.setColor(Color.GREEN);
-//     //         g.fillRect(x + usedBarWidth, y, freeBarWidth, height);
+            // Free (green)
+            g.setColor(Color.GREEN);
+            g.fillRect(x + usedBarWidth, y, freeBarWidth, height);
 
-//     //         // Border
-//     //         g.setColor(Color.BLACK);
-//     //         g.drawRect(x, y, width, height);
-//     //     }
-//     // }
+            // Border
+            g.setColor(Color.BLACK);
+            g.drawRect(x, y, width, height);
+        }
+    }
 }
 
 

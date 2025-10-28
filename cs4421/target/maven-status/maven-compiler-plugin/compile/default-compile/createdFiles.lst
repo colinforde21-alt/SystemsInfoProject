@@ -6,6 +6,7 @@ randomGUi$4.class
 showDiskInfo.class
 randomGUi$5.class
 randomGUi.class
+showMemInfo$MemoryBarPanel.class
 showGPUInfo.class
 usbInfo.class
 randomGUi$7.class
