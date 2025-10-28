@@ -4,5 +4,6 @@ batteryInfo.class
 memInfo.class
 diskInfo.class
 usbInfo.class
+gpuInfo.class
 template.class
 sysInfo.class

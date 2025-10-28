@@ -127,8 +127,6 @@ public class template
     }
 
     public static void showBattery() {
-        
-
         double capacity = batteryInfo.getBatteryCapacity();
         if (capacity != -1) {
             String batInfo = batteryInfo.getBatteryNameAndManufacturer();
@@ -148,9 +146,24 @@ public class template
         }
         else {
             System.out.println("No battery found.");
-        }
+        }   
+    }
 
-        
+    public static void showGPU() {
+        String gpuName = gpuInfo.getGPUName();
+        if (gpuName != "No GPU found") {
+            String gpuVendor = gpuInfo.getGPUVendor();
+            long gpuMemory = gpuInfo.getGPUMemory();
+            String driverVersion = gpuInfo.getGPUDriverVersion();
+
+            System.out.println("GPU Vendor: " + gpuVendor);
+            System.out.println("GPU Name: " + gpuName);
+            System.out.println("GPU Memory: " + gpuMemory + " MB");
+            System.out.println("GPU Driver Version: " + driverVersion);
+            
+        } else {
+            System.out.println(gpuName);
+        }
     }
 
     public static void main(String[] args)
@@ -172,11 +185,12 @@ public class template
         showDisk();
         showMem();
         showBattery();
+        showGPU();
         
 
-        SystemInfo si = new SystemInfo();
-        CentralProcessor cpu = si.getHardware().getProcessor();
-        System.out.println("CPU: " + cpu.getProcessorIdentifier().getName());
+        // SystemInfo si = new SystemInfo();
+        // CentralProcessor cpu = si.getHardware().getProcessor();
+        // System.out.println("CPU: " + cpu.getProcessorIdentifier().getName());
     }
 }
 
