@@ -115,6 +115,16 @@ public class randomGUi {
                 frame.dispose();
             }
         });
+
+        JButton motherboardButton = new JButton("Motherboard Info");
+        motherboardButton.setBounds(startX + (buttonWidth + spacing) / 2 + buttonWidth + spacing, startY + buttonHeight + spacing, buttonWidth, buttonHeight);
+        panel.add(motherboardButton);
+        motherboardButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e){
+                new displayMotherboardInfo();
+                frame.dispose();
+            }
+        });
         frame.add(panel);
         frame.setVisible(true);
 
@@ -391,5 +401,24 @@ class showDisplayInfo {
         displayFrame.add(scrollPane);
 
         displayFrame.setVisible(true);
+    }
+}
+
+class displayMotherboardInfo {
+    public displayMotherboardInfo() {
+        JFrame mbFrame = new JFrame("Motherboard Information");
+        mbFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        mbFrame.setSize(400, 300);
+
+        motherboardInfo motherboard = new motherboardInfo();
+        JTextArea mbInfoText = new JTextArea();
+        mbInfoText.setText(motherboard.displayMotherboardInfo());
+        mbInfoText.setEditable(false);
+        
+
+        JScrollPane scrollPane = new JScrollPane(mbInfoText);
+        mbFrame.add(scrollPane);
+
+        mbFrame.setVisible(true);
     }
 }
