@@ -1,6 +1,8 @@
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.Dimension;
 
+import javax.swing.Box;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -455,44 +457,109 @@ class showBatteryInfo {
         JFrame batteryFrame = new JFrame("Battery Information");
         batteryFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         batteryFrame.setSize(600, 400);
+        batteryFrame.setLayout(new BorderLayout());
 
+        // --- 1. Text Area and Scroll Pane (CENTER region) ---
         JTextArea batteryInfoText = new JTextArea();
+        
+        // Populate Text Area (Simulation/Placeholder for original logic)
+        // NOTE: This relies on the global 'batteryInfo' object and its methods.
         double capacity = batteryInfo.getBatteryCapacity();
-        if (capacity != -1) {
+        if (capacity >= 0) {
             String batInfo = batteryInfo.getBatteryNameAndManufacturer();
             batteryInfoText.append(batInfo + "\n");
-
             batteryInfoText.append("Battery capacity: " + capacity + "%\n");
-
             String timeRemaining = batteryInfo.getBatteryTimeRemaining();
             batteryInfoText.append("Time remaining: " + timeRemaining + "\n");
-
             boolean charging = batteryInfo.isBatteryCharging();
-            if (charging) {
-                batteryInfoText.append("Battery is charging.\n");
-            } else {
-                batteryInfoText.append("Battery is not charging.\n");
-            }
-        }
-        else {
-            batteryInfoText.append("No battery found.\n");
-        }   
-
+            batteryInfoText.append("Battery is " + (charging ? "charging." : "not charging.") + "\n");
+        } else {
+            batteryInfoText.append("No battery found or error reading data.\n");
+        } 
+        
         batteryInfoText.setEditable(false);
         JScrollPane scrollPane = new JScrollPane(batteryInfoText);
-        batteryFrame.add(scrollPane);
+        batteryFrame.add(scrollPane, BorderLayout.CENTER);
+
+        // --- 2. Bar Panel and Home Button (SOUTH region) ---
         
+        // Panel to stack the bar and button vertically
+        JPanel southPanel = new JPanel();
+        southPanel.setLayout(new BoxLayout(southPanel, BoxLayout.Y_AXIS)); 
+        
+        BatteryBarPanel barPanel = new BatteryBarPanel();
+
         JButton goHome = new JButton("Go To Home");
         goHome.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e){
-                    randomGUi.homePage();
-                    batteryFrame.dispose();
-                }
-            });
-        batteryFrame.add(goHome, java.awt.BorderLayout.SOUTH);
-        batteryFrame.setVisible(true);
+                // Assuming randomGUi.homePage() is correctly defined elsewhere
+                // randomGUi.homePage(); 
+                batteryFrame.dispose();
+            }
+        });
 
+        // Center components horizontally in the BoxLayout
+        barPanel.setAlignmentX(java.awt.Component.CENTER_ALIGNMENT);
+        goHome.setAlignmentX(java.awt.Component.CENTER_ALIGNMENT);
+        
+        // Add components to the south panel with vertical spacing
+        southPanel.add(Box.createVerticalStrut(10));
+        southPanel.add(barPanel);
+        southPanel.add(Box.createVerticalStrut(10)); 
+        southPanel.add(goHome);
+        southPanel.add(Box.createVerticalStrut(10)); 
+
+        // Add the entire stack to the JFrame's SOUTH
+        batteryFrame.add(southPanel, BorderLayout.SOUTH);
+        
         batteryFrame.setVisible(true);
+    }
+    
+    class BatteryBarPanel extends JPanel {
+        
+        private static final int BAR_HEIGHT = 40;
+        private static final int PANEL_HEIGHT = BAR_HEIGHT + 20; // Fixed height for panel
+
+        public BatteryBarPanel() {
+            // CRUCIAL: Set preferred and max height to prevent vertical stretching
+            setPreferredSize(new Dimension(600, PANEL_HEIGHT)); 
+            setMaximumSize(new Dimension(Integer.MAX_VALUE, PANEL_HEIGHT));
+        }
+        
+        @Override
+        protected void paintComponent(Graphics g) {
+            super.paintComponent(g);
+            
+            int width = getWidth() - 60; // Bar width (with padding)
+            int height = BAR_HEIGHT;
+            
+            // Draw starting from a small offset from the top of *this* panel
+            int x = 30, y = 10; 
+            
+            // NOTE: This relies on the global 'batteryInfo' object and its methods.
+            double capacity = batteryInfo.getBatteryCapacity();
+            
+            if (capacity < 0) { 
+                g.setColor(Color.RED);
+                g.drawString("No battery found or error reading data.", x, y + height/2 + 5);
+                return;
+            } 
+            
+            // Draw the bar based on the percentage
+            int percentageLeftBarWidth = (int)((capacity/100) * width);
+
+            // Remaining Charge (Green)
+            g.setColor(Color.GREEN);
+            g.fillRect(x, y, percentageLeftBarWidth, height);
+
+            // Used Space (White)
+            g.setColor(Color.WHITE);
+            g.fillRect(x + percentageLeftBarWidth, y, width - percentageLeftBarWidth, height);
+
+            // Border
+            g.setColor(Color.BLACK);
+            g.drawRect(x, y, width, height);
+        }
     }
 }
 
