@@ -1,6 +1,7 @@
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -9,11 +10,14 @@ import javax.swing.JTextArea;
 import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
 import javax.swing.BoxLayout;
+
 import java.util.ArrayList;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.GridLayout;
+
+import javax.swing.text.StyledEditorKit;
 
 
 
@@ -28,17 +32,19 @@ public class randomGUi {
         JFrame frame = new JFrame("Home Page");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(600, 400);
+        
 
-
-        int buttonWidth = 100;
-        int buttonHeight = 40;
-        int spacing = 20;
-
-        int startX = (frame.getWidth() - (3 * buttonWidth + 2 * spacing)) / 2;
-        int startY = (frame.getHeight() - (2 * buttonHeight + spacing)) / 2;
+        
         JPanel panel = new JPanel();
+        panel.setLayout(null);
+
+        JLabel Heading = new JLabel("System Information GUI");
+        Heading.setBounds(185,30,300,40);
+        Heading.setFont(new java.awt.Font("Serif", java.awt.Font.BOLD, 20));
+        frame.add(Heading);
+
         JButton CPUbutton = new JButton("CPU Info");
-        CPUbutton.setBounds(startX, startY, buttonWidth, buttonHeight);
+        CPUbutton.setBounds(80,100,150,40);
         panel.add(CPUbutton);
         CPUbutton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e){
@@ -49,7 +55,7 @@ public class randomGUi {
         });
         
         JButton diskButton = new JButton("Disk Info");
-        diskButton.setBounds(startX + buttonWidth + spacing, startY, buttonWidth, buttonHeight);
+        diskButton.setBounds(240,100,150,40);
         panel.add(diskButton);
         diskButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e){
@@ -59,7 +65,7 @@ public class randomGUi {
             }
         });
         JButton memButton = new JButton("Memory Info");
-        memButton.setBounds(startX + 2 * (buttonWidth + spacing), startY, buttonWidth, buttonHeight);
+        memButton.setBounds(400,100,150,40);
         panel.add(memButton);
         memButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e){
@@ -69,7 +75,7 @@ public class randomGUi {
             }
         });
         JButton pciButton = new JButton("PCI Info");
-        pciButton.setBounds(startX + (buttonWidth + spacing) / 2, startY + buttonHeight + spacing, buttonWidth, buttonHeight);
+        pciButton.setBounds(80,160,150,40);
         panel.add(pciButton);
         pciButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e){
@@ -79,7 +85,7 @@ public class randomGUi {
             }
         });
         JButton usbButton = new JButton("USB Info");
-        usbButton.setBounds(startX + (buttonWidth + spacing) / 2 + buttonWidth + spacing, startY + buttonHeight + spacing, buttonWidth, buttonHeight);
+        usbButton.setBounds(240,160,150,40);
         panel.add(usbButton);
         usbButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e){
@@ -89,7 +95,7 @@ public class randomGUi {
             }
         });
         JButton gpuButton = new JButton("GPU Info");
-        gpuButton.setBounds(startX + (buttonWidth + spacing) / 2 + buttonWidth + spacing, startY + buttonHeight + spacing, buttonWidth, buttonHeight);
+        gpuButton.setBounds(80,220,150,40);
         panel.add(gpuButton);
         gpuButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e){
@@ -99,7 +105,7 @@ public class randomGUi {
             }
         });
         JButton batteryButton = new JButton("Battery Info");
-        batteryButton.setBounds(startX + (buttonWidth + spacing) / 2 + buttonWidth + spacing, startY + buttonHeight + spacing, buttonWidth, buttonHeight);
+        batteryButton.setBounds(400,160,150,40);
         panel.add(batteryButton);
         batteryButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e){
@@ -108,7 +114,7 @@ public class randomGUi {
             }
         });
         JButton displayButton = new JButton("Display Info");
-        displayButton.setBounds(startX + (buttonWidth + spacing) / 2 + buttonWidth + spacing, startY + buttonHeight + spacing, buttonWidth, buttonHeight);
+        displayButton.setBounds(240,220,150,40);
         panel.add(displayButton);
         displayButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e){
@@ -118,7 +124,7 @@ public class randomGUi {
         });
 
         JButton motherboardButton = new JButton("Motherboard Info");
-        motherboardButton.setBounds(startX + (buttonWidth + spacing) / 2 + buttonWidth + spacing, startY + buttonHeight + spacing, buttonWidth, buttonHeight);
+        motherboardButton.setBounds(400,220,150,40);
         panel.add(motherboardButton);
         motherboardButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e){
@@ -136,7 +142,7 @@ class showCpuInfo {
     public showCpuInfo() {
         JFrame cpuFrame = new JFrame("CPU Information");
         cpuFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        cpuFrame.setSize(500, 400);
+        cpuFrame.setSize(600, 400);
         JTextArea area = new JTextArea();
         area.setText(cpuInfo.getCpuSummary());
         JScrollPane scroll = new JScrollPane(area);
@@ -191,7 +197,7 @@ class showCpuInfo {
 
         JFrame memFrame = new JFrame("Memory Information");
         memFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        memFrame.setSize(400, 300);
+        memFrame.setSize(600, 400);
         memFrame.setLayout(new BorderLayout());
 
         JPanel infoPanel = new JPanel(new GridLayout(4, 1));
@@ -303,7 +309,7 @@ class showPCIInfo {
     public showPCIInfo() {
         JFrame pciFrame = new JFrame("PCI Information");
         pciFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        pciFrame.setSize(400, 300);
+        pciFrame.setSize(600, 400);
 
         int pciCount = newPciInfo.getPCIBusCount();
         ArrayList<String> pciDetails = newPciInfo.getPCIInfo();
@@ -339,7 +345,7 @@ class showUSBInfo {
     public showUSBInfo() {
         JFrame usbFrame = new JFrame("USB Information");
         usbFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        usbFrame.setSize(400, 300);
+        usbFrame.setSize(600, 400);
         usbInfo usb = new usbInfo();
         usb.read();
         JTextArea usbInfoText = new JTextArea();
@@ -356,7 +362,6 @@ class showUSBInfo {
         usbFrame.add(goHome, java.awt.BorderLayout.SOUTH);
         usbFrame.setVisible(true);
 
-        usbFrame.setVisible(true);
     }
 }
 
@@ -366,7 +371,7 @@ class showDiskInfo {
         disk.read();
         JFrame diskFrame = new JFrame("Disk Information");
         diskFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        diskFrame.setSize(400, 300);
+        diskFrame.setSize(600, 400);
         JTextArea diskInfoText = new JTextArea();
         diskInfoText.setText(disk.displayDiskInfo());
         diskInfoText.setEditable(false);
@@ -389,7 +394,7 @@ class showGPUInfo {
     public showGPUInfo() {
         JFrame gpuFrame = new JFrame("GPU Information");
         gpuFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        gpuFrame.setSize(400, 300);
+        gpuFrame.setSize(600, 400);
         
         JTextArea gpuInfoText = new JTextArea();
         String gpuName = gpuInfo.getGPUName();
@@ -429,7 +434,7 @@ class showBatteryInfo {
     public showBatteryInfo() {
         JFrame batteryFrame = new JFrame("Battery Information");
         batteryFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        batteryFrame.setSize(400, 300);
+        batteryFrame.setSize(600, 400);
 
         JTextArea batteryInfoText = new JTextArea();
         double capacity = batteryInfo.getBatteryCapacity();
@@ -475,7 +480,7 @@ class showDisplayInfo {
     public showDisplayInfo() {
         JFrame displayFrame = new JFrame("Display Information");
         displayFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        displayFrame.setSize(400, 300);
+        displayFrame.setSize(600, 400);
 
         int displayCount = displayInfo.getDisplayCount();
         String displayDetails = displayInfo.getDisplayInfo();
@@ -506,7 +511,7 @@ class displayMotherboardInfo {
     public displayMotherboardInfo() {
         JFrame mbFrame = new JFrame("Motherboard Information");
         mbFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        mbFrame.setSize(400, 300);
+        mbFrame.setSize(600, 400);
 
         motherboardInfo motherboard = new motherboardInfo();
         JTextArea mbInfoText = new JTextArea();
