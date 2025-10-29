@@ -17,6 +17,8 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.GridLayout;
+import java.awt.Font;
+
 
 
 
@@ -315,14 +317,13 @@ class showPCIInfo {
         pciFrame.setSize(600, 400);
 
         int pciCount = newPciInfo.getPCIBusCount();
-        ArrayList<String> pciDetails = newPciInfo.getPCIInfo();
+        String pciDetails = newPciInfo.getFormattedPCIInfo();
         JTextArea pciDetailsText = new JTextArea(); 
-        StringBuilder detailsBuilder = new StringBuilder();
-        for (String device : pciDetails) {
-            detailsBuilder.append(device).append("\n");
-        }
+        pciDetailsText.setFont(new Font("Monospaced", Font.PLAIN, 12));
+
+        
         pciDetailsText.append("Device has: " + pciCount + " PCI buses\n");
-        pciDetailsText.append(detailsBuilder.toString());
+        pciDetailsText.append(pciDetails);
         pciDetailsText.setEditable(false);
 
 
