@@ -100,8 +100,9 @@ public class usbInfo
                 String product = device.getName();
 
                 usbInformation.append("  Device: " + product + "\n");
-                usbInformation.append("Vendor ID: 0x" + String.format("%04X", vendorId) + " (" + vendor + ")\n");
-                usbInformation.append("Product ID: 0x" + String.format("%04X", productId) + "\n");
+                usbInformation.append("Vendor ID: 0x" + vendorId + " (" + vendor + ")\n");
+                usbInformation.append("Product ID: 0x" + productId + "\n");
+
 
                 //usbInformation.append("Device Type: " + deviceType(vendor) + "\n");
             }
@@ -109,6 +110,7 @@ public class usbInfo
         return usbInformation.toString();
     }
 }
+
 
 
         
