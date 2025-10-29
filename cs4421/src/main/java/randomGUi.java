@@ -355,6 +355,7 @@ class showUSBInfo {
         JTextArea usbInfoText = new JTextArea();
         usbInfoText.setText(usb.displayUSBInfo());
         usbInfoText.setEditable(false);
+        usbFrame.add(usbInfoText);
         
         JButton goHome = new JButton("Go To Home");
         goHome.addActionListener(new ActionListener() {
@@ -364,6 +365,7 @@ class showUSBInfo {
                 }
             });
         usbFrame.add(goHome, java.awt.BorderLayout.SOUTH);
+        
         usbFrame.setVisible(true);
 
     }
@@ -379,6 +381,7 @@ class showDiskInfo {
         JTextArea diskInfoText = new JTextArea();
         diskInfoText.setText(disk.displayDiskInfo());
         diskInfoText.setEditable(false);
+        diskFrame.add(diskInfoText);
 
         JButton goHome = new JButton("Go To Home");
         goHome.addActionListener(new ActionListener() {
@@ -389,7 +392,7 @@ class showDiskInfo {
             });
         diskFrame.add(goHome, java.awt.BorderLayout.SOUTH);
         JButton readwritegraph = new JButton("Show Disk Read/Write Graph");
-        readwritegraph.setBounds(300, 100, 220, 40);
+        readwritegraph.setBounds(350, 250, 220, 40);
         diskFrame.add(readwritegraph);
         readwritegraph.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e){
@@ -412,6 +415,7 @@ class showDiskInfo {
         
     }
 }
+
 
 class showGPUInfo {
     public showGPUInfo() {
