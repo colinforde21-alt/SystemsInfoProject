@@ -1,4 +1,3 @@
-
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -17,7 +16,6 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.GridLayout;
 
-import javax.swing.text.StyledEditorKit;
 
 
 
@@ -155,7 +153,7 @@ class showCpuInfo {
         graphButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e){
                 SwingUtilities.invokeLater(() -> {
-                    LiveLineChart app = new LiveLineChart("JFreeChart Live Data Example");
+                    LiveLineChart app = new LiveLineChart("JFreeChart Live CPU Data Feed");
                     JButton goHome = new JButton("Go To Home");
                     goHome.addActionListener(new ActionListener() {
                         public void actionPerformed(ActionEvent e){
@@ -163,11 +161,14 @@ class showCpuInfo {
                             app.dispose();
                         }
                     });
-        cpuFrame.add(goHome, java.awt.BorderLayout.SOUTH);
+
                     app.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
                     app.pack();
                     app.setLocationRelativeTo(null);
+
+                    app.add(goHome, java.awt.BorderLayout.SOUTH);
                     app.setVisible(true);
+
             
                 });
             }
@@ -257,10 +258,10 @@ class showCpuInfo {
             long max = runtime.maxMemory() / 1024;     // KB
             long used = total - free;
             double percent = (double) used / max * 100.0;
-            totalLabel.setText("Total Memory: " + max + " KB (Fallback)");
-            usedLabel.setText("Used Memory: " + used + " KB (Fallback)");
-            freeLabel.setText("Free Memory: " + free + " KB (Fallback)");
-            percentLabel.setText("Percent Used: " + String.format("%.2f%% (Fallback)", percent));
+            totalLabel.setText("Total Memory: " + max + " KB");
+            usedLabel.setText("Used Memory: " + used + " KB");
+            freeLabel.setText("Free Memory: " + free + " KB");
+            percentLabel.setText("Percent Used: " + String.format("%.2f%%", percent));
         }
         barPanel.repaint();
     }
@@ -384,9 +385,28 @@ class showDiskInfo {
                 }
             });
         diskFrame.add(goHome, java.awt.BorderLayout.SOUTH);
+        JButton readwritegraph = new JButton("Show Disk Read/Write Graph");
+        readwritegraph.setBounds(300, 100, 220, 40);
+        diskFrame.add(readwritegraph);
+        readwritegraph.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e){
+                SwingUtilities.invokeLater(() -> {
+                    diskChart diskChartApp = new diskChart();
+                    diskChartApp.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                    JButton goHome = new JButton("Go To Home");
+                    goHome.addActionListener(new ActionListener() {
+                        public void actionPerformed(ActionEvent e){
+                            randomGUi.homePage();
+                            diskChartApp.dispose();
+                        }
+                    });
+                    diskChartApp.add(goHome, java.awt.BorderLayout.SOUTH);
+                    diskChartApp.setVisible(true);
+                });
+            }
+        });
         diskFrame.setVisible(true);
         
-        diskFrame.setVisible(true);
     }
 }
 
