@@ -28,7 +28,7 @@ import java.awt.Font;
 public class randomGUi {
     public static void main(String[] args) {
         System.setProperty("sun.java2d.uiScale", "2");
-        System.loadLibrary("sysinfo");
+        //System.loadLibrary("sysinfo");
         homePage();
     }
     public static void homePage() {
@@ -356,7 +356,10 @@ class showUSBInfo {
         JTextArea usbInfoText = new JTextArea();
         usbInfoText.setText(usb.displayUSBInfo());
         usbInfoText.setEditable(false);
-        usbFrame.add(usbInfoText);
+        JScrollPane scroll = new JScrollPane(usbInfoText);
+        scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+        usbFrame.add(scroll);
+        
         
         JButton goHome = new JButton("Go To Home");
         goHome.addActionListener(new ActionListener() {
@@ -382,7 +385,10 @@ class showDiskInfo {
         JTextArea diskInfoText = new JTextArea();
         diskInfoText.setText(disk.displayDiskInfo());
         diskInfoText.setEditable(false);
-        diskFrame.add(diskInfoText);
+
+        JScrollPane scroll  = new JScrollPane(diskInfoText);
+        scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+        diskFrame.add(scroll);
 
         JButton goHome = new JButton("Go To Home");
         goHome.addActionListener(new ActionListener() {
@@ -391,10 +397,13 @@ class showDiskInfo {
                     diskFrame.dispose();
                 }
             });
-        diskFrame.add(goHome, java.awt.BorderLayout.SOUTH);
+
         JButton readwritegraph = new JButton("Show Disk Read/Write Graph");
         readwritegraph.setBounds(350, 250, 220, 40);
-        diskFrame.add(readwritegraph);
+        JPanel buttons = new JPanel();
+        buttons.add(goHome);
+        buttons.add(readwritegraph);
+        diskFrame.add(buttons, BorderLayout.SOUTH);
         readwritegraph.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e){
                 SwingUtilities.invokeLater(() -> {
@@ -407,8 +416,9 @@ class showDiskInfo {
                             diskChartApp.dispose();
                         }
                     });
-                    diskChartApp.add(goHome, java.awt.BorderLayout.SOUTH);
-                    diskChartApp.setVisible(true);
+
+            
+            diskChartApp.setVisible(true);
                 });
             }
         });

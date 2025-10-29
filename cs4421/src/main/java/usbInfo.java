@@ -4,6 +4,11 @@
  *  Copyright (c) 2024 Mark Burkley (mark.burkley@ul.ie)
  */
 
+import java.util.List;
+
+import oshi.SystemInfo;
+import oshi.hardware.UsbDevice;
+
 public class usbInfo 
 {
     // Refresh the current values and counters - call this before other methods
@@ -21,37 +26,8 @@ public class usbInfo
     // Return the product ID of a USB device
     public native int productID (int bus, int device);
 
-    public String vendorType (int bus, int device){
-        int vid = vendorID (bus, device);
-        switch (vid){
-            case 0x046D: return "Logitech Inc.";
-            case 0x05AC: return "Apple, Inc.";
-            case 0x0781: return "SanDisk Corp.";
-            case 0x8087: return "Intel Corp.";  
-            case 0x045E: return "Microsoft Corp.";
-            case 0x18D1: return "Google, Inc.";
-            case 0x0BDA: return "Realtek Semiconductor Corp.";
-            case 0x054C: return "Sony Corp.";
-            case 0x12D1: return "Huawei Technologies Co., Ltd";
-            case 0x1A40: return "Terminus Technology Inc.";
-            case 0x0E8D: return "MediaTek Inc.";
-            case 0x1B3D: return "Razer Inc.";
-            case 0x1E7D: return "DJI Innovations";
-            case 0x2E8A: return "Bitmain Technologies Inc.";
-            case 0x1F3A: return "TP-Link Technologies Co., Ltd.";
-            case 0x2C7C: return "Samsung Electronics Co., Ltd.";
-            case 0x13FE: return "Sony Interactive Entertainment";
-            case 0x1532: return "Razer Inc.";
-            case 0x0C45: return "Microdia";
-            case 0x1D6B: return "Linux Foundation";
-            case 0x0403: return "Future Technology Devices International, Ltd";
-            case 0x10C4: return "Silicon Labs";
-            case 0x1366: return "Cypress Semiconductor Corp.";
-            default: return "Unknown Vendor";
-        }
-    }
 
-    public String deviceType(int bus, int device) {
+    /*public String deviceType(int bus, int device) {
         String vendor = vendorType(bus, device).toLowerCase();
 
         if (vendor.contains("logitech")) {
@@ -103,75 +79,31 @@ public class usbInfo
         } else {
             return "Miscellaneous / Unknown Device";
         }
-    }
+    }*/
 
-    // public String deviceType(int bus, int device) {
-    //     String vendor = vendorType(bus, device).toLowerCase();
+    SystemInfo si = new SystemInfo();
+    List<UsbDevice> usbDevices = si.getHardware().getUsbDevices(true); 
 
-    //     if (vendor.contains("logitech")) {
-    //         return "Peripheral (Keyboard/Mouse/Webcam)";
-    //     } else if (vendor.contains("apple")) {
-    //         return "Mobile / Peripheral / Accessory";
-    //     } else if (vendor.contains("sandisk")) {
-    //         return "Storage Device (USB Drive)";
-    //     } else if (vendor.contains("intel")) {
-    //         return "Chipset / Internal Controller";
-    //     } else if (vendor.contains("microsoft")) {
-    //         return "Peripheral / Accessory";
-    //     } else if (vendor.contains("google")) {
-    //         return "Mobile / Development Device";
-    //     } else if (vendor.contains("realtek")) {
-    //         return "Network Adapter / Audio / Internal Chip";
-    //     } else if (vendor.contains("sony")) {
-    //         return "Entertainment Device";
-    //     } else if (vendor.contains("huawei")) {
-    //         return "Mobile Modem / Network Device";
-    //     } else if (vendor.contains("terminus")) {
-    //         return "USB Hub Controller";
-    //     } else if (vendor.contains("mediatek")) {
-    //         return "Chipset / Network / Mobile Controller";
-    //     } else if (vendor.contains("razer")) {
-    //         return "Gaming Peripheral";
-    //     } else if (vendor.contains("dji")) {
-    //         return "Camera / Drone Device";
-    //     } else if (vendor.contains("bitmain")) {
-    //         return "Mining / Compute Hardware";
-    //     } else if (vendor.contains("tp-link")) {
-    //         return "Network Adapter / Router Interface";
-    //     } else if (vendor.contains("samsung")) {
-    //         return "Storage / Mobile / Peripheral Device";
-    //     } else if (vendor.contains("microdia")) {
-    //         return "Imaging Device (Webcam)";
-    //     } else if (vendor.contains("linux foundation")) {
-    //         return "System Virtual / Composite Device";
-    //     } else if (vendor.contains("future technology devices")) {
-    //         return "USB Serial Converter / Development Board";
-    //     } else if (vendor.contains("silicon labs")) {
-    //         return "Serial Interface / Microcontroller";
-    //     } else if (vendor.contains("cypress")) {
-    //         return "Microcontroller / Development Board";
-    //     } else if (vendor.contains("broadcom")) {
-    //         return "Wireless / Bluetooth Controller";
-    //     } else if (vendor.contains("toshiba")) {
-    //         return "Storage Device / Flash Memory";
-    //     } else {
-    //         return "Miscellaneous / Unknown Device";
-    //     }
-    // }
-
-    
     public String displayUSBInfo() {
         StringBuilder usbInformation = new StringBuilder();
         int buses = busCount();
+
         usbInformation.append("Number of USB Buses: " + buses + "\n");
         for (int bus = 0; bus < buses; bus++) {
             int devices = deviceCount(bus);
             usbInformation.append("Bus " + bus + " - Number of Devices: " + devices + "\n");
-            for (int device = 0; device < devices; device++) {
-                usbInformation.append("  Device " + device + ":\n");
-                usbInformation.append("Vendor ID: 0x" + String.format("%04X", vendorID(bus, device)) + " (" + vendorType(bus, device) + ")\n");
-                usbInformation.append("Product ID: 0x" + String.format("%04X", productID(bus, device)) + "\n");
-                usbInformation.append("Device Type: " + deviceType(bus, device) + "\n");
+
+            for (UsbDevice device : usbDevices) {
+                String vendor = device.getVendor();
+                String vendorId = device.getVendorId();
+                String productId = device.getProductId();
+                String product = device.getName();
+
+                usbInformation.append("  Device: " + product + "\n");
+                usbInformation.append("Vendor ID: 0x" + String.format("%04X", vendorId) + " (" + vendor + ")\n");
+                usbInformation.append("Product ID: 0x" + String.format("%04X", productId) + "\n");
+
+                //usbInformation.append("Device Type: " + deviceType(vendor) + "\n");
             }
         }
         return usbInformation.toString();
