@@ -28,6 +28,7 @@ import java.awt.Font;
 public class randomGUi {
     public static void main(String[] args) {
         System.setProperty("sun.java2d.uiScale", "2");
+        System.loadLibrary("libsysinfo");
         homePage();
     }
     public static void homePage() {
