@@ -1,45 +1,96 @@
-/*
- *  CPU information class for JNI
- *
- *  Copyright (c) 2024 Mark Burkley (mark.burkley@ul.ie)
- */
+import oshi.SystemInfo;
+import oshi.hardware.CentralProcessor;
+import oshi.hardware.CentralProcessor.ProcessorCache;
 
-public class cpuInfo 
-{
-    // Refresh the current values and counters - call this before other methods
-    public native void read (int seconds);
-    public native void read ();
+import java.util.concurrent.TimeUnit;
+import java.util.List;
 
-    // Return the number of cores per CPU socket
-    public native int coresPerSocket ();
+import javax.swing.JFrame;
+import javax.swing.SwingUtilities;
+import javax.swing.JLabel;
+import java.lang.StringBuilder;
 
-    // Return the number of CPUs in this computer
-    public native int socketCount ();
+public class cpuInfo {
 
-    // Return the model number of the CPU
-    public native String getModel ();
+    static SystemInfo si = new SystemInfo();
+    static CentralProcessor processor = si.getHardware().getProcessor();
 
-    // Return the size in bytes of the L1 data cache
-    public native int l1dCacheSize ();
+    public static void main(String[] args) {
+        System.out.println("--- CS4421 Hardware Reporter (OSHI Demonstration) ---");
+        presentSystemDetails();
+    }
 
-    // Return the size in bytes of the L1 instruction cache
-    public native int l1iCacheSize ();
+    public static double getProcessorLoad() {
+        try {
+            long[] prevTicks = processor.getSystemCpuLoadTicks();
+            TimeUnit.SECONDS.sleep(1);
+            double cpuLoad = processor.getSystemCpuLoadBetweenTicks(prevTicks) * 100;
+            return cpuLoad;
+        } catch (InterruptedException e) {
+            return 0.0;
+        }
+    }
 
-    // Return the size in bytes of the L2 cache
-    public native int l2CacheSize ();
+    public static void cacheInfo() {
+        List<ProcessorCache> caches = processor.getProcessorCaches();
+        for (ProcessorCache cache : caches) {
+            long sizeKiB = cache.getCacheSize();
+            System.out.println(String.format(
+                "Cache L%d %s: %d KiB (Line Size: %d bytes)",
+                (int) cache.getLevel(),
+                cache.getType().toString(),
+                sizeKiB,
+                (int) cache.getLineSize()
+            ));
+        }
+    }
 
-    // Return the size in bytes of the L3 cache
-    public native int l3CacheSize ();
+    public static String getCpuSummary() {
+        StringBuilder sb = new StringBuilder();
+        String model = si.getHardware().getComputerSystem().getModel();
+        sb.append("Model: ").append(model).append('\n');
+        sb.append("OS: ").append(si.getOperatingSystem()).append('\n');
+        sb.append('\n').append("--- CPU Cores ---").append('\n');
+        sb.append("Number of sockets: ").append(processor.getPhysicalPackageCount()).append('\n');
+        sb.append("Processor Name: ").append(processor.getProcessorIdentifier().getName()).append('\n');
+        sb.append("Physical Cores: ").append(processor.getPhysicalProcessorCount()).append('\n');
+        sb.append("Logical Cores (Threads): ").append(processor.getLogicalProcessorCount()).append('\n');
 
-    // Return the time in "jiffies" or 1/100ths of a second 
-    // that the specified core has been in user mode
-    public native int getUserTime (int core);
+        List<ProcessorCache> caches = processor.getProcessorCaches();
+        for (ProcessorCache cache : caches) {
+            long sizeKiB = cache.getCacheSize();
+            sb.append(String.format(
+                "Cache L%d %s: %d KiB (Line Size: %d bytes)\n",
+                (int) cache.getLevel(),
+                cache.getType().toString(),
+                sizeKiB,
+                (int) cache.getLineSize()
+            ));
+        }
 
-    // Return the time in "jiffies" or 1/100ths of a second 
-    // that the specified core has been idle
-    public native int getIdleTime (int core);
+        return sb.toString();
+    }
 
-    // Return the time in "jiffies" or 1/100ths of a second 
-    // that the specified core has been in system mode
-    public native int getSystemTime (int core);
+    private static void presentSystemDetails() {
+        /*String model = si.getHardware().getComputerSystem().getModel();
+        System.out.println("Model: " + model);
+        System.out.println("OS: " + si.getOperatingSystem());
+
+        System.out.println("\n--- CPU Cores ---");
+        System.out.println("Number of sockets: " + processor.getPhysicalPackageCount());
+        System.out.println("Processor Name: " + processor.getProcessorIdentifier().getName());
+        System.out.println("Physical Cores: " + processor.getPhysicalProcessorCount());
+        System.out.println("Logical Cores (Threads): " + processor.getLogicalProcessorCount());
+        cacheInfo();*/
+
+        SwingUtilities.invokeLater(() -> {
+            LiveLineChart app = new LiveLineChart("JFreeChart Live Data Example");
+            app.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            app.pack();
+            app.setLocationRelativeTo(null);
+            app.setVisible(true);
+        });
+    }
 }
+
+ 

@@ -82,6 +82,25 @@ public class diskInfo
         }
     }
 
+    public String displayDiskInfo(){
+        StringBuilder diskInformation = new StringBuilder();
+        int disks = diskCount();
+        diskInformation.append("System Total Disk Space: " + String.format("%.2f", systemTotal()) + (" GB\n"));
+        diskInformation.append("System Used Disk Space: " + String.format("%.2f", systemUsed()) + (" GB\n"));
+        diskInformation.append("System Available Disk Space: " + String.format("%.2f", systemAvailable())).append(" GB\n");
+        diskInformation.append("Total Disks: " + disks + "\n");
+
+        for (int i = 0; i < disks; i++){
+            diskInformation.append("Disk" + i+1 + " Name: " + getName(i) + "\n");
+            diskInformation.append("Disk" + i+1 + " Type: " + getDiskType(i) + "\n");
+            diskInformation.append("Disk" + i+1 + " Total Space: " + String.format("%.2f", (double)getTotal(i)/(1024.0*1024.0*1024.0)) + " GB\n");
+            diskInformation.append("Disk" + i+1 + " Used Space: " + String.format("%.2f", (double)getUsed(i)/(1024.0*1024.0*1024.0)) + " GB\n");
+            diskInformation.append("Disk" + i+1 + " Available Space: " + String.format("%.2f", (double)getAvailable(i)/(1024.0*1024.0*1024.0)) + " GB\n");
+            diskInformation.append("Disk" + i+1 + " Used Percent: " + String.format("%.2f", getUsedPercent(i)) + " %\n");
+            diskInformation.append("\n");
+        }
+        return diskInformation.toString();
+    }
 }
 
 
