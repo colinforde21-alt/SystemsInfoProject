@@ -77,11 +77,16 @@ public class diskInfo
             return "eMMC";
         } else if (name.startsWith("loop")){
             return "Loopback";
+        } else if (name.startsWith("tmpfs")){
+            return "Temporary File System";
+        } else if (name.startsWith("/dev/")){
+            return "Device File System";
+        } else if (name.startsWith("ram")){
+            return "RAM Disk";
         } else {
             return "Unknown";
         }
     }
-
     public String displayDiskInfo(){
         StringBuilder diskInformation = new StringBuilder();
         int disks = diskCount();
@@ -102,5 +107,6 @@ public class diskInfo
         return diskInformation.toString();
     }
 }
+
 
 
